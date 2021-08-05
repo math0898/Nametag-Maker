@@ -1,0 +1,8 @@
+name: NametagMaker
+version: 0.0.1
+main: io.github.math0898.nametagmaker.main
+api-version: 1.17
+prefix: Nametag Maker
+authors: [ Sugaku ]
+description: Allows the creation and customization of nametags for Minecraft servers.
+website: https://www.github.com/math0898/Nametag-Maker
