@@ -132,9 +132,9 @@ public class MainCommand implements CommandExecutor {
         long start = System.currentTimeMillis();
         if (Config.read() && Lang.read()) {
             NametagApplier.clean();
-            sender.sendMessage(Lang.prefix + Lang.reloaded);
             NametagApplier.init();
             NametagApplier.refresh();
+            sender.sendMessage(Lang.prefix + Lang.reloaded);
             sender.sendMessage(Lang.prefix + "Took: " + (System.currentTimeMillis() - start) + "ms");
         } else sender.sendMessage(Lang.prefix + Lang.reloadFailed);
     }

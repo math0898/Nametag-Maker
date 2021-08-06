@@ -6,9 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-
-import java.util.Objects;
 
 /**
  * This class handles the application and continued application of nametags to players.
@@ -16,8 +15,6 @@ import java.util.Objects;
  * @author Sugaku
  */
 public class NametagApplier implements Listener {
-
-    //TODO: Implement enabled.
 
     /**
      * When a player joins the server... apply the desired nametag to them.
@@ -35,9 +32,18 @@ public class NametagApplier implements Listener {
      */
     public static void init () {
         if (!Config.enabled) return;
-        //TODO: Tags.yml, reading, creating, and using.
-        Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard().registerNewTeam("nametag-" + "default");
-        Objects.requireNonNull(Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nametag-" + "default")).setColor(ChatColor.GREEN);
+        if (!Tags.init()) return;
+        assert Bukkit.getScoreboardManager() != null;
+        Scoreboard s = Bukkit.getScoreboardManager().getMainScoreboard();
+        for (TagGroup g: Tags.groups) {
+            String name = "nt-" + g.name;
+            s.registerNewTeam(name);
+            Team t = s.getTeam(name);
+            assert t != null;
+            t.setColor(g.color);
+            t.setPrefix(g.prefix);
+            t.setSuffix(g.suffix);
+        }
     }
 
     /**
@@ -56,11 +62,19 @@ public class NametagApplier implements Listener {
     @SuppressWarnings("all")
     public static void update (Player p) {
         if (!Config.enabled) return;
-        //TODO: Add logic for determining other teams.
-        try {
-            Objects.requireNonNull(Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nametag-default")).addEntry(p.getDisplayName()); //May produce null pointer
-        } catch (NullPointerException ignored) {
-            //TODO
+        for (TagGroup g: Tags.groups) {  // O(n)
+            if (g.permission != null) {
+                if (p.hasPermission(g.permission)) {
+                    Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nt-" + g.name).addEntry(p.getName());
+                    break;
+                }
+            }
+            for (String n: g.players) { // O(n^2)!
+                if (n.equalsIgnoreCase(p.getName())) {
+                    Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nt-" + g.name).addEntry(p.getName());
+                    break;
+                }
+            }
         }
     }
 
@@ -72,6 +86,6 @@ public class NametagApplier implements Listener {
             main.console("Scoreboard manager is not defined!", ChatColor.RED);
             return;
         }
-        for (Team t: Bukkit.getScoreboardManager().getMainScoreboard().getTeams()) if (t.getName().contains("nametag-")) t.unregister();
+        for (TagGroup g: Tags.groups) Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nt-" + g.name).unregister();
     }
 }

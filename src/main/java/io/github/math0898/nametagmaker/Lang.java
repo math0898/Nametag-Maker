@@ -124,7 +124,7 @@ public class Lang {
     }
 
     /**
-     * Reads the language file for the plugin. Hosted at plugins/'PluginName'/messages.yml
+     * Reads the language file for the plugin. Hosted at plugins/'PluginName'/lang.yml
      *
      * @return Whether the reading the language was a success.
      */
@@ -162,17 +162,17 @@ public class Lang {
     }
 
     /**
-     * Creates the default language file for the plugin. Hosted at plugins/'PluginName'/messages.yml
+     * Creates the default language file for the plugin. Hosted at plugins/'PluginName'/lang.yml
      *
      * @return Whether creating the language file was a success.
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static boolean create() {
         try {
-            File config = new File("./plugins/NametagMaker/lang.yml");
-            config.delete();
-            config.createNewFile();
-            FileWriter writer = new FileWriter(config);
+            File lang = new File("./plugins/NametagMaker/lang.yml");
+            lang.delete();
+            lang.createNewFile();
+            FileWriter writer = new FileWriter(lang);
             writer.write("# This is the default lang file for the Nametag Maker plugin.\n");
             writer.write("#\n");
             writer.write("#\n");
