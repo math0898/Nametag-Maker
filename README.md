@@ -15,4 +15,4 @@ This project uses the following versioning scheme.
 - __/nametag refresh__ - Refreshes the nametags of all players currently logged into the game.
 - __/nametag reload__ - Reloads the configuration, language, and tags files after which it also refreshes the nametags of all players.
 ## How it Works
-> Nametag Maker uses vanilia Minecraft's teams which are an extension of the scoreboards system to change the display color of users and to apply prefixes and suffixes to names. Using teams also has the unintended but beneficial side effect of changing the tablist colors along with displaying prefixes and suffixes.
+Nametag Maker uses vanilia Minecraft's teams which are an extension of the scoreboards system to change the display color of users and to apply prefixes and suffixes to names. Using teams also has the unintended but beneficial side effect of changing the tablist colors along with displaying prefixes and suffixes.
