@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.Objects;
@@ -27,6 +26,7 @@ public class NametagApplier implements Listener {
      */
     @EventHandler
     public static void onJoin (PlayerJoinEvent event) {
+        if (!Config.enabled) return;
         update(event.getPlayer());
     }
 
@@ -34,6 +34,7 @@ public class NametagApplier implements Listener {
      * Initializes teams based on what is read from Tags.yml
      */
     public static void init () {
+        if (!Config.enabled) return;
         //TODO: Tags.yml, reading, creating, and using.
         Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard().registerNewTeam("nametag-" + "default");
         Objects.requireNonNull(Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nametag-" + "default")).setColor(ChatColor.GREEN);
@@ -43,6 +44,7 @@ public class NametagApplier implements Listener {
      * Refreshes the nametags of all players currently online.
      */
     public static void refresh () {
+        if (!Config.enabled) return;
         for (Player p: Bukkit.getOnlinePlayers()) update(p);
     }
 
@@ -53,6 +55,7 @@ public class NametagApplier implements Listener {
      */
     @SuppressWarnings("all")
     public static void update (Player p) {
+        if (!Config.enabled) return;
         //TODO: Add logic for determining other teams.
         try {
             Objects.requireNonNull(Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nametag-default")).addEntry(p.getDisplayName()); //May produce null pointer

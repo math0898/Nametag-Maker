@@ -29,7 +29,7 @@ public class Lang {
     /**
      * The message sent when disabling the plugins is successful.
      */
-    public static String disable = ChatColor.RED + "Disabled." + ChatColor.GRAY + "This will be overridden by config.yml on reload.";
+    public static String disable = ChatColor.RED + "Disabled. " + ChatColor.GRAY + "This will be overridden by config.yml on reload.";
 
     /**
      * The message sent on how to re-enable the plugin.
@@ -44,7 +44,7 @@ public class Lang {
     /**
      * The message sent when the plugin is enabled.
      */
-    public static String enable = ChatColor.GREEN + "Enabled." + ChatColor.GRAY + "This will be overridden by config.yml on reload";
+    public static String enable = ChatColor.GREEN + "Enabled. " + ChatColor.GRAY + "This will be overridden by config.yml on reload";
 
     /**
      * The message sent on how to re-disable the plugin.

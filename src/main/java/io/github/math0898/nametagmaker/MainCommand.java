@@ -64,7 +64,8 @@ public class MainCommand implements CommandExecutor {
      * @param sender Source of the command.
      */
     private void disableSubcommand (CommandSender sender) {
-        if (Config.enabled) { //TODO: NametagApplier
+        if (Config.enabled) {
+            NametagApplier.clean();
             Config.enabled = false;
             sender.sendMessage(Lang.prefix + Lang.disable);
             sender.sendMessage(Lang.prefix + Lang.reEnable);
@@ -79,8 +80,10 @@ public class MainCommand implements CommandExecutor {
      * @param sender Source of the command.
      */
     private void enableSubcommand (CommandSender sender) {
-        if (!Config.enabled) { //TODO: NametagApplier
+        if (!Config.enabled) {
             Config.enabled = true;
+            NametagApplier.init();
+            NametagApplier.refresh();
             sender.sendMessage(Lang.prefix + Lang.enable);
             sender.sendMessage(Lang.prefix + Lang.reDisable);
             Bukkit.getConsoleSender().sendMessage(Lang.prefix + sender.getName() + Lang.enabled);
