@@ -103,6 +103,7 @@ public class MainCommand implements CommandExecutor {
         sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/nametag disable");
         sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/nametag enable");
         sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/nametag help");
+        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/nametag refresh");
         sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/nametag reload");
     }
 
