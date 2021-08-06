@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -21,11 +20,6 @@ public class Config {
      * A boolean which states whether the plugin is enabled.
      */
     public static boolean enabled = false;
-
-    /**
-     * An ArrayList<ArrayList<String>> which holds all the data on artifacts.
-     */
-    public static ArrayList<ArrayList<String>> data = new ArrayList<>(); //TODO
 
     /**
      * Initializes the configuration for the plugin. It checks if the file exists and creates it if it needs to be. Then
@@ -64,7 +58,7 @@ public class Config {
                     Scanner s2 = new Scanner(line);
                     s2.next();
                     enabled = Boolean.parseBoolean(s2.next());
-                } //TODO: The data
+                }
             }
             return true;
         } catch (Exception exception) {

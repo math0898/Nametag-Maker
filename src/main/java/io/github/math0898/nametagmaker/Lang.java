@@ -62,6 +62,21 @@ public class Lang {
     public static String alreadyEnabled = "Already enabled. Use " + ChatColor.GREEN + "/nametag disable" + ChatColor.GRAY + " to disable.";
 
     /**
+     * The message sent when starting to refresh nametags.
+     */
+    public static String refreshing = "Refreshing nametags...";
+
+    /**
+     * The message sent when finished refreshing nametags.
+     */
+    public static String refreshed = ChatColor.GREEN + "All nametags refreshed!";
+
+    /**
+     * The message sent when attempting to refresh whilst the plugin is disabled.
+     */
+    public static String refreshDisabled = ChatColor.RED + "Cannot refresh. Plugin disabled!";
+
+    /**
      * The message sent when reloading the language and configuration files.
      */
     public static String reloading = "Reloading lang and config...";
@@ -131,8 +146,12 @@ public class Lang {
                 else if (line.contains("reDisable: ")) reDisable = line.replace("reDisable: ", "");
                 else if (line.contains("enabled: ")) enabled = line.replace("enabled: ", "");
                 else if (line.contains("alreadyEnabled: ")) alreadyEnabled = line.replace("alreadyEnabled: ", "");
+                else if (line.contains("refreshing: ")) refreshing = line.replace("refreshing: ", "");
+                else if (line.contains("refreshed: ")) refreshed = line.replace("refreshed: ", "");
+                else if (line.contains("refreshDisabled: ")) refreshDisabled = line.replace("refreshDisabled: ", "");
                 else if (line.contains("reloading: ")) reloading = line.replace("reloading: ", "");
                 else if (line.contains("reloaded: ")) reloaded = line.replace("reloaded: ", "");
+                else if (line.contains("reloadFailed: ")) reloadFailed = line.replace("reloadFailed: ", "");
             }
             return true;
         } catch (Exception exception) {
@@ -165,13 +184,13 @@ public class Lang {
             writer.write("unrecognized: " + unrecognized + "\n");
             writer.write("# The message sent when mentioning /<MainCommand> help exists.\n");
             writer.write("useHelp: " + useHelp + "\n");
+            writer.write("# The message sent on how to re-enable the plugin.\n");
+            writer.write("reEnable: " + reEnable + "\n");
             writer.write("# -- Disable Subcommand --\n");
             writer.write("# The message sent when the plugin is already disabled.\n");
             writer.write("alreadyDisabled: " + alreadyDisabled + "\n");
             writer.write("# The message sent when disabling the plugin is successful.\n");
             writer.write("disable: " + disable + "\n");
-            writer.write("# The message sent on how to re-enable the plugin.\n");
-            writer.write("reEnable: " + reEnable + "\n");
             writer.write("# The message sent to console when the plugin is disabled.\n");
             writer.write("disabled: " + disabled + "\n");
             writer.write("# -- Enable Subcommand --\n");
@@ -183,11 +202,20 @@ public class Lang {
             writer.write("enabled: " + enabled + "\n");
             writer.write("# The message sent when attempting to enable the plugin and its already enabled.\n");
             writer.write("alreadyEnabled: " + alreadyEnabled + "\n");
+            writer.write("# -- Refresh Subcommand --\n");
+            writer.write("# The message sent when starting to refresh nametags.\n");
+            writer.write("refreshing: " + refreshing + "\n");
+            writer.write("# The message sent when finished refreshing nametags.");
+            writer.write("refreshed: " + refreshed + "\n");
+            writer.write("# The message sent when attempting to refresh whilst the plugin is disabled.");
+            writer.write("refreshDisabled: " + refreshDisabled + "\n");
             writer.write("# -- Reload Subcommand --\n");
             writer.write("# The message sent when reloading the language and configuration files.\n");
             writer.write("reloading: " + reloading + "\n");
             writer.write("# The message sent when reload is complete.\n");
             writer.write("reloaded: " + reloaded + "\n");
+            writer.write("# The message sent when reload fails.\n");
+            writer.write("reloadFailed: " + reloadFailed + "\n");
             writer.close();
             return true;
         } catch (Exception exception) {

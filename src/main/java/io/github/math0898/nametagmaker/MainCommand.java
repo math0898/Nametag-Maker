@@ -112,8 +112,14 @@ public class MainCommand implements CommandExecutor {
      * @param sender Sender of the command.
      */
     private void refreshSubcommand (CommandSender sender) {
-        sender.sendMessage(ChatColor.GRAY + "refresh"); //TODO: Lang
-        NametagApplier.refresh();
+        if (Config.enabled) {
+            sender.sendMessage(Lang.prefix + Lang.refreshing);
+            NametagApplier.refresh();
+            sender.sendMessage(Lang.prefix + Lang.refreshed);
+        } else {
+            sender.sendMessage(Lang.prefix + Lang.refreshDisabled);
+            sender.sendMessage(Lang.prefix + Lang.reEnable);
+        }
     }
 
     /**
