@@ -20,7 +20,7 @@ public final class main extends JavaPlugin {
     /**
      * String representation of the version of the plugin.
      */
-    public static String version = "v0.1.3-alpha";
+    public static String version = "v0.1.4-alpha";
 
     /**
      * This method sends a message to the console.
