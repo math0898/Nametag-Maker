@@ -20,7 +20,7 @@ public final class main extends JavaPlugin {
     /**
      * String representation of the version of the plugin.
      */
-    public static String version = "v1.1.2";
+    public static String version = "v1.2.1";
 
     /**
      * This method sends a message to the console.
@@ -38,18 +38,18 @@ public final class main extends JavaPlugin {
     public void onEnable() {
         // Configuration loading
         console("Loading configuration.", ChatColor.GRAY);
-        if (Config.init()) console("Configuration loaded.", ChatColor.GREEN);
+        if (Config.init()) console("Configuration loaded.", ChatColor.GRAY);
         else console("Failed to load configuration!", ChatColor.RED);
         // Language loading
         console("Loading language file.", ChatColor.GRAY);
-        if (Lang.init()) console("Language loaded.", ChatColor.GREEN);
+        if (Lang.init()) console("Language loaded.", ChatColor.GRAY);
         else console("Failed to load language!", ChatColor.RED);
         // Initializing Commands
         console("Setting up commands.", ChatColor.GRAY);
         try {
             this.getCommand("nametag").setExecutor(new MainCommand()); //May produce null pointer
             this.getCommand("nametag").setTabCompleter(MainCommand.autocomplete); //May produce null pointer
-            console("Command setup successful!", ChatColor.GREEN);
+            console("Command setup successful!", ChatColor.GRAY);
         } catch (NullPointerException exception) {
             console("Could not setup command.", ChatColor.RED);
             console(exception.toString(), ChatColor.RED);
@@ -57,12 +57,16 @@ public final class main extends JavaPlugin {
         // Register events
         console("Registering event listeners.", ChatColor.GRAY);
         Bukkit.getPluginManager().registerEvents(new NametagApplier(), this);
-        console("Events registered.", ChatColor.GREEN);
+        Bukkit.getPluginManager().registerEvents(new UpdateChecker(), this);
+        console("Events registered.", ChatColor.GRAY);
         // Reading Tags.yml and setting up teams
         console("Initializing teams.", ChatColor.GRAY);
         NametagApplier.clean();
         NametagApplier.init();
-        console("Teams initialized!", ChatColor.GREEN);
+        console("Teams initialized!", ChatColor.GRAY);
+        // Check for updates
+        console("Checking for updates.", ChatColor.GRAY);
+        UpdateChecker.init(this);
         // Console the result of the load.
         if (Config.enabled) console("Loading successful. Plugin enabled.", ChatColor.GREEN);
         else console("Plugin is disabled. If this is a mistake please check the config and report.", ChatColor.RED);
@@ -76,7 +80,7 @@ public final class main extends JavaPlugin {
     public void onDisable() {
         console("Removing teams.", ChatColor.GRAY);
         NametagApplier.clean();
-        console("Teams removed.", ChatColor.GREEN);
+        console("Teams removed.", ChatColor.GRAY);
         console("Tear down successful!", ChatColor.GREEN);
     }
 }

@@ -1,5 +1,5 @@
 name: NametagMaker
-version: 1.1.2
+version: 1.2.1
 main: io.github.math0898.nametagmaker.main
 api-version: 1.17
 prefix: Nametag Maker
@@ -9,6 +9,7 @@ website: https://www.github.com/math0898/Nametag-Maker
 permissions:
   nametagmaker.*:
     nametagmaker.admin:
+    nametagmaker.update:
 commands:
   nametag:
     description: Serves as the main command to interact with the Nametag Maker plugin.
