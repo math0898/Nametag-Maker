@@ -1,7 +1,8 @@
 # Nametag Maker
 A plugin for Spigot and Paper Minecraft servers which allows the creation and customization of nametags. 
 ## Permissions
-- __nametag.admin__ - _The admin permission for Nametag Maker. Allows access to commands and in game nametag editors._ <br />
+- __nametagmaker.admin__ - _The admin permission for Nametag Maker. Allows access to commands and in game nametag editors._ <br />
+- __nametagmaker.update__ - _Anytime a player joins with this permission a check is made to see if the plugin is up to date. If it's not they get annoyed with a message. _ <br />
 ## Commands
 - __/nametag__ - Displays plugin status and version information
 - __/nametag disable__ - Disables the plugin during runtime in case of emergencies or just desire to disable it.
