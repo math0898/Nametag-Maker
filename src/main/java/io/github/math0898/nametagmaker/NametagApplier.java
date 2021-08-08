@@ -43,6 +43,7 @@ public class NametagApplier implements Listener {
             t.setColor(g.color);
             t.setPrefix(g.prefix);
             t.setSuffix(g.suffix);
+            if (!g.visible) t.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
         }
     }
 
@@ -63,14 +64,18 @@ public class NametagApplier implements Listener {
     public static void update (Player p) {
         if (!Config.enabled) return;
         for (TagGroup g: Tags.groups) {  // O(n)
-            if (g.permission != null) {
-                if (p.hasPermission(g.permission)) {
-                    Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nt-" + g.name).addEntry(p.getName());
-                    break;
-                }
+            Team current = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(p.getName());
+            if (current != null) {
+                TagGroup currentTag = Tags.findTeam(current.getName());
+                if (currentTag != null) if (currentTag.weight >= g.weight) continue;
+            }
+            if (g.permission != null) if (p.hasPermission(g.permission)) {
+                if (current != null) current.removeEntry(p.getName());
+                Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nt-" + g.name).addEntry(p.getName());
             }
             for (String n: g.players) { // O(n^2)!
                 if (n.equalsIgnoreCase(p.getName())) {
+                    if (current != null) current.removeEntry(p.getName());
                     Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nt-" + g.name).addEntry(p.getName());
                     break;
                 }

@@ -63,6 +63,7 @@ public class Tags {
                 else if (line.contains("color: ")) groups.get(groups.size() - 1).setColor(line.replace("color: ", "").replace("§", ""));
                 else if (line.contains("permission: ")) groups.get(groups.size() - 1).setPermission(line.replace("permission: ", ""));
                 else if (line.contains("weight: ")) groups.get(groups.size() - 1).setWeight(Integer.parseInt(line.replace("weight: ", "")));
+                else if (line.contains("visible: ")) groups.get(groups.size() - 1).setVisible(Boolean.parseBoolean(line.replace("visible: ", "")));
 
             }
             return true;
@@ -89,8 +90,7 @@ public class Tags {
             writer.write("# You can add lines to this file to add groups in the game.\n");
             writer.write("# Every group must start with a name:<name> tag and then can\n");
             writer.write("# include any number of the following optional tags listed bellow.\n");
-            writer.write("# You may want to also look up the Minecraft color codes.");
-            writer.write("#\n");
+            writer.write("# You may want to also look up the Minecraft color codes.\n");
             writer.write("# ---- Tags ----\n");
             writer.write("#\n");
             writer.write("# name: <name> - 'Declares' a new tag group.\n");
@@ -105,10 +105,11 @@ public class Tags {
             writer.write("#                      group.\n");
             writer.write("# weight: <int> - The weight value of the tag. The higher the weight the more\n");
             writer.write("#                 it overrides others.\n");
+            writer.write("# visible: <true/false> - Does nothing if set to true. If set to false nametags\n");
+            writer.write("#                         will not be visible above player heads.\n");
             writer.write("name: default\n");
             writer.write("color: &a\n");
             writer.write("permission: nametag.default\n");
-            //TODO: Additional tag for visible nametags.
             writer.close();
             return true;
         } catch (Exception exception) {
@@ -116,5 +117,16 @@ public class Tags {
             main.console(exception.getMessage(), ChatColor.RED);
             return false;
         }
+    }
+
+    /**
+     * Returns the TagGroup if any of them match the given name.
+     *
+     * @param n The string name of the requested team.
+     */
+    public static TagGroup findTeam (String n) {
+        main.console(n, ChatColor.RED);
+        for (TagGroup g: groups) if (g.name.equals(n.replace("nt-", ""))) return g;
+        return null;
     }
 }
