@@ -1,5 +1,5 @@
 name: NametagMaker
-version: 1.2.1
+version: 2.1.1
 main: io.github.math0898.nametagmaker.main
 api-version: 1.17
 prefix: Nametag Maker
@@ -16,3 +16,4 @@ commands:
     permission: nametagmaker.admin
     permission-message: You do not have access to that command.
     usage: Hello world!
+    aliases: ntm

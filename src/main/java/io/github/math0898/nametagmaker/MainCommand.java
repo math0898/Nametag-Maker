@@ -71,12 +71,13 @@ public class MainCommand implements CommandExecutor {
         if (args.length < 2) {
             sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + " - (create)");
             sender.sendMessage(Lang.prefix + "This is hard to explain in game. Here's a link to the wiki article.");
-            sender.sendMessage(Lang.prefix + "github.com/math0898/Nametag-Maker/wiki/Commandline-Editor");
+            sender.sendMessage("https://github.com/math0898/Nametag-Maker/wiki/Commandline-Editor");
             return;
         }
         StringBuilder input = new StringBuilder();
         for (int i = 1; i < args.length; i++) input.append(" ").append(args[i]);
         sender.sendMessage(parseTag(input.toString()));
+        NametagApplier.refresh();
     }
 
     /**
@@ -105,6 +106,8 @@ public class MainCommand implements CommandExecutor {
                         read = s.next();
                         temp += " " + read;
                     }
+                    main.console(read, ChatColor.GRAY);
+                    temp += read.replace("\"", "");
                 }
                 if (read.contains("prefix:")) prefix = temp.replace("\"", "").replace("prefix:", "");
                 else if (read.contains("suffix:")) prefix = temp.replace("\"", "").replace("suffix:", "");

@@ -136,8 +136,9 @@ public class Tags {
     public static void save () {
         File f = new File("./plugins/NametagMaker/tags.yml");
         try {
-            FileWriter writer = new FileWriter(f);
+            //noinspection ResultOfMethodCallIgnored
             f.delete();
+            FileWriter writer = new FileWriter(f);
             writer.write("# This is the default tags file for the Nametag Maker plugin.\n");
             writer.write("# You can add lines to this file to add groups in the game.\n");
             writer.write("# Every group must start with a name:<name> tag and then can\n");
@@ -160,14 +161,15 @@ public class Tags {
             writer.write("# visible: <true/false> - Does nothing if set to true. If set to false nametags\n");
             writer.write("#                         will not be visible above player heads.\n");
             for (TagGroup t: groups) {
-                writer.write("name: " + t.name);
-                writer.write("color: " + t.color.toString().replace("§", "&"));
-                writer.write("prefix: " + t.prefix);
-                writer.write("suffix: " + t.suffix);
-                writer.write("permission: " + t.permission);
-                writer.write("weight: " + t.weight);
-                writer.write("visible: " + t.visible);
-                for (String n: t.players) writer.write("player: " + n);
+                writer.write("name: " + t.name + "\n");
+                if (t.color != null) writer.write("color: " + t.color.toString().replace("§", "&") + "\n");
+                else writer.write("color: &f \n");
+                writer.write("prefix: " + t.prefix + "\n");
+                writer.write("suffix: " + t.suffix + "\n");
+                writer.write("permission: " + t.permission + "\n");
+                writer.write("weight: " + t.weight + "\n");
+                writer.write("visible: " + t.visible + "\n");
+                for (String n: t.players) writer.write("player: " + n + "\n");
             }
             writer.close();
         } catch (IOException exception) {
