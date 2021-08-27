@@ -4,7 +4,6 @@ import org.bukkit.ChatColor;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class Tags {
                 else if (line.contains("player: ")) groups.get(groups.size() - 1).addPlayer(line.replace("player: ", ""));
                 else if (line.contains("prefix: ")) groups.get(groups.size() - 1).setPrefix(line.replace("prefix: ", ""));
                 else if (line.contains("suffix: ")) groups.get(groups.size() - 1).setSuffix(line.replace("suffix: ", ""));
-                else if (line.contains("color: ")) groups.get(groups.size() - 1).setColor(line.replace("color: ", "").replace("§", "").replace("&", ""));
+                else if (line.contains("color: ")) groups.get(groups.size() - 1).setColor(line.replace("color: ", "").replace("§", ""));
                 else if (line.contains("permission: ")) groups.get(groups.size() - 1).setPermission(line.replace("permission: ", ""));
                 else if (line.contains("weight: ")) groups.get(groups.size() - 1).setWeight(Integer.parseInt(line.replace("weight: ", "")));
                 else if (line.contains("visible: ")) groups.get(groups.size() - 1).setVisible(Boolean.parseBoolean(line.replace("visible: ", "")));
@@ -126,53 +125,8 @@ public class Tags {
      * @param n The string name of the requested team.
      */
     public static TagGroup findTeam (String n) {
+        main.console(n, ChatColor.RED);
         for (TagGroup g: groups) if (g.name.equals(n.replace("nt-", ""))) return g;
         return null;
-    }
-
-    /**
-     * Saves all TagGroups currently loaded to the tags.yml file.
-     */
-    public static void save () {
-        File f = new File("./plugins/NametagMaker/tags.yml");
-        try {
-            FileWriter writer = new FileWriter(f);
-            f.delete();
-            writer.write("# This is the default tags file for the Nametag Maker plugin.\n");
-            writer.write("# You can add lines to this file to add groups in the game.\n");
-            writer.write("# Every group must start with a name:<name> tag and then can\n");
-            writer.write("# include any number of the following optional tags listed bellow.\n");
-            writer.write("# You may want to also look up the Minecraft color codes.\n");
-            writer.write("# ---- Tags ----\n");
-            writer.write("#\n");
-            writer.write("# name: <name> - 'Declares' a new tag group.\n");
-            writer.write("# player: <playerName> - Adds the player to the group regardless of\n");
-            writer.write("#                        permissions. One player per however multiple\n");
-            writer.write("#                        'player:' can exist per group.\n");
-            writer.write("# prefix: <prefix> - Sets the prefix for this group.\n");
-            writer.write("# suffix: <suffix> - Sets the suffix for this group.\n");
-            writer.write("# color: <colorCode> - Sets the color for the group. Please use chat color\n");
-            writer.write("#                      codes such as &a = Green.\n");
-            writer.write("# permission: <node> - If present players with this node will be added to the\n");
-            writer.write("#                      group.\n");
-            writer.write("# weight: <int> - The weight value of the tag. The higher the weight the more\n");
-            writer.write("#                 it overrides others.\n");
-            writer.write("# visible: <true/false> - Does nothing if set to true. If set to false nametags\n");
-            writer.write("#                         will not be visible above player heads.\n");
-            for (TagGroup t: groups) {
-                writer.write("name: " + t.name);
-                writer.write("color: " + t.color.toString().replace("§", "&"));
-                writer.write("prefix: " + t.prefix);
-                writer.write("suffix: " + t.suffix);
-                writer.write("permission: " + t.permission);
-                writer.write("weight: " + t.weight);
-                writer.write("visible: " + t.visible);
-                for (String n: t.players) writer.write("player: " + n);
-            }
-            writer.close();
-        } catch (IOException exception) {
-            main.console("Could not save tags.", ChatColor.RED);
-            main.console(exception.getMessage(), ChatColor.RED);
-        }
     }
 }
