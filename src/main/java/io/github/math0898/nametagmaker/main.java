@@ -2,6 +2,7 @@ package io.github.math0898.nametagmaker;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -20,7 +21,12 @@ public final class main extends JavaPlugin {
     /**
      * String representation of the version of the plugin.
      */
-    public static String version = "v1.2.1";
+    public static String version = "v2.1.1";
+
+    /**
+     * A pointer to the java plugin.
+     */
+    public static JavaPlugin plugin = null;
 
     /**
      * This method sends a message to the console.
@@ -31,45 +37,48 @@ public final class main extends JavaPlugin {
     public static void console(String message, ChatColor color) { Bukkit.getConsoleSender().sendMessage(prefix + color + message); }
 
     /**
+     * Sends an ASCI art to the console... very important to the functionality of the plugin.
+     */
+    public static void asciArt () {
+        CommandSender console = Bukkit.getConsoleSender();
+        console.sendMessage("");
+        console.sendMessage(ChatColor.GOLD + "  |\\ |"  + " ---" + " |\\  /|    " + prefix.replace("[", "").replace("]", "").replace("6","b") + ChatColor.DARK_GREEN + version);
+        console.sendMessage(ChatColor.GOLD + "  | \\|"  + "  | " + " | \\/ |    " + ChatColor.DARK_GRAY + "Server Version - " + Bukkit.getVersion());
+        console.sendMessage("");
+    }
+
+    /**
      * Handles the loading of config and lang, registering command managers, and event listeners.
      */
     @Override
     @SuppressWarnings("all")
     public void onEnable() {
+        long start = System.currentTimeMillis();
+        asciArt();
+        plugin = this;
         // Configuration loading
-        console("Loading configuration.", ChatColor.GRAY);
-        if (Config.init()) console("Configuration loaded.", ChatColor.GRAY);
-        else console("Failed to load configuration!", ChatColor.RED);
+        console("Loading configuration...", ChatColor.GRAY);
+        if (!Config.init()) console("Failed to load configuration!", ChatColor.RED);
         // Language loading
-        console("Loading language file.", ChatColor.GRAY);
-        if (Lang.init()) console("Language loaded.", ChatColor.GRAY);
-        else console("Failed to load language!", ChatColor.RED);
+        if (!Lang.init()) console("Failed to load language!", ChatColor.RED);
         // Initializing Commands
-        console("Setting up commands.", ChatColor.GRAY);
         try {
             this.getCommand("nametag").setExecutor(new MainCommand()); //May produce null pointer
             this.getCommand("nametag").setTabCompleter(MainCommand.autocomplete); //May produce null pointer
-            console("Command setup successful!", ChatColor.GRAY);
         } catch (NullPointerException exception) {
-            console("Could not setup command.", ChatColor.RED);
+            console("Could not setup commands.", ChatColor.RED);
             console(exception.toString(), ChatColor.RED);
         }
         // Register events
-        console("Registering event listeners.", ChatColor.GRAY);
         Bukkit.getPluginManager().registerEvents(new NametagApplier(), this);
         Bukkit.getPluginManager().registerEvents(new UpdateChecker(), this);
-        console("Events registered.", ChatColor.GRAY);
         // Reading Tags.yml and setting up teams
-        console("Initializing teams.", ChatColor.GRAY);
+        console("Initializing teams...", ChatColor.GRAY);
         NametagApplier.clean();
         NametagApplier.init();
-        console("Teams initialized!", ChatColor.GRAY);
-        // Check for updates
-        console("Checking for updates.", ChatColor.GRAY);
-        UpdateChecker.init(this);
         // Console the result of the load.
-        if (Config.enabled) console("Loading successful. Plugin enabled.", ChatColor.GREEN);
-        else console("Plugin is disabled. If this is a mistake please check the config and report.", ChatColor.RED);
+        if (Config.enabled) console("Loading successful. Plugin enabled." + ChatColor.DARK_GRAY + " Took: " + (System.currentTimeMillis() - start) + "ms", ChatColor.GREEN);
+        else console("Plugin is disabled. If this is a mistake please check the config and report." + ChatColor.DARK_GRAY + " Took: " + (System.currentTimeMillis() - start) + "ms", ChatColor.RED);
     }
 
     /**
@@ -80,7 +89,6 @@ public final class main extends JavaPlugin {
     public void onDisable() {
         console("Removing teams.", ChatColor.GRAY);
         NametagApplier.clean();
-        console("Teams removed.", ChatColor.GRAY);
         console("Tear down successful!", ChatColor.GREEN);
     }
 }

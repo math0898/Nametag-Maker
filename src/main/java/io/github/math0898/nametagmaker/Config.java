@@ -12,7 +12,7 @@ import java.util.Scanner;
  * This class handles the configuration for this plugin. It's used to read what admins have changed and write the
  * default configurations.
  *
- * @author Sugaku
+ * @author Sugak
  */
 public class Config {
 
