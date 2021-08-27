@@ -48,6 +48,11 @@ public class TagGroup {
     public int weight = 0;
 
     /**
+     * Whether this tag is visible.
+     */
+    public boolean visible = true;
+
+    /**
      * Default constructor for a TagGroup. Simply requires a name.
      *
      * @param name The name of the tag group.
@@ -87,14 +92,21 @@ public class TagGroup {
     /**
      * Sets the permission node for the TagGroup.
      */
-    public void setPermission (String p) { //TODO
+    public void setPermission (String p) {
         permission = p;
     }
 
     /**
      * Sets the weight for the TagGroup.
      */
-    public void setWeight (int i) { //TODO
+    public void setWeight (int i) {
         weight = i;
+    }
+
+    /**
+     * Sets the visibility of the tag.
+     */
+    public void setVisible (boolean b) {
+        visible = b;
     }
 }
