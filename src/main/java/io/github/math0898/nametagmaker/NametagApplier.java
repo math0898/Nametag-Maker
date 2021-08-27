@@ -91,6 +91,6 @@ public class NametagApplier implements Listener {
             main.console("Scoreboard manager is not defined!", ChatColor.RED);
             return;
         }
-        for (TagGroup g: Tags.groups) Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nt-" + g.name).unregister();
+        for (Team t: Bukkit.getScoreboardManager().getMainScoreboard().getTeams()) if (t.getName().contains("nt-")) t.unregister();
     }
 }

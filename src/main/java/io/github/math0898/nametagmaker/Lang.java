@@ -37,6 +37,21 @@ public class Lang {
     public static String reEnable = "Use " + ChatColor.GREEN + "/nametag enable" + ChatColor.GRAY + " to re-enable without a reload.";
 
     /**
+     * The message sent on how to re-disable the plugin.
+     */
+    public static String reDisable = "Use " + ChatColor.GREEN + "/nametag disable" + ChatColor.GRAY + " to disable without a reload.";
+
+    /**
+     * The message sent when a tag name is not specified.
+     */
+    public static String noTag = ChatColor.RED + "Please specify a tag name.";
+
+    /**
+     * The message sent when a tag is not found.
+     */
+    public static String tagNotFound = ChatColor.RED + "Could not find a tag by that name.";
+
+    /**
      * The message sent to console when the plugin is disabled.
      */
     public static String disabled = ChatColor.YELLOW + " has disabled Nametag Maker.";
@@ -45,11 +60,6 @@ public class Lang {
      * The message sent when the plugin is enabled.
      */
     public static String enable = ChatColor.GREEN + "Enabled. " + ChatColor.GRAY + "This will be overridden by config.yml on reload";
-
-    /**
-     * The message sent on how to re-disable the plugin.
-     */
-    public static String reDisable = "Use " + ChatColor.GREEN + "/nametag disable" + ChatColor.GRAY + " to disable without a reload.";
 
     /**
      * The message sent to console when the plugin is enabled.
@@ -134,16 +144,18 @@ public class Lang {
             Scanner s = new Scanner(new File("./plugins/NametagMaker/lang.yml"));
             while (s.hasNextLine()) {
                 String line = s.nextLine().replace('&','§');
-                if (line.contains("#")) { } //Empty body if
+                if (line.contains("#")) continue;
                 else if (line.contains("prefix: ")) prefix = line.replace("prefix: ", "");
                 else if (line.contains("unrecognized: ")) unrecognized = line.replace("unrecognized: ", "");
                 else if (line.contains("useHelp: ")) useHelp = line.replace("useHelp: ", "");
                 else if (line.contains("alreadyDisabled: ")) alreadyDisabled = line.replace("alreadyDisabled: ", "");
                 else if (line.contains("disable: ")) disable = line.replace("disable: ", "");
                 else if (line.contains("reEnable: ")) reEnable = line.replace("reEnable: ", "");
+                else if (line.contains("reDisable: ")) reDisable = line.replace("reDisable: ", "");
+                else if (line.contains("noTag: ")) noTag = line.replace("noTag: ", "");
+                else if (line.contains("tagNotFound: ")) tagNotFound = line.replace("tagNotFound: ", "");
                 else if (line.contains("disabled: ")) disabled = line.replace("disabled: ", "");
                 else if (line.contains("enable: ")) enable = line.replace("enable: ", "");
-                else if (line.contains("reDisable: ")) reDisable = line.replace("reDisable: ", "");
                 else if (line.contains("enabled: ")) enabled = line.replace("enabled: ", "");
                 else if (line.contains("alreadyEnabled: ")) alreadyEnabled = line.replace("alreadyEnabled: ", "");
                 else if (line.contains("refreshing: ")) refreshing = line.replace("refreshing: ", "");
@@ -186,6 +198,12 @@ public class Lang {
             writer.write("useHelp: " + useHelp.replace('§','&') + "\n");
             writer.write("# The message sent on how to re-enable the plugin.\n");
             writer.write("reEnable: " + reEnable.replace('§','&') + "\n");
+            writer.write("# The message sent on how to re-disable the plugin.\n");
+            writer.write("reDisable: " + reDisable.replace('§','&') + "\n");
+            writer.write("# The message sent when a tag name is not specified.\n");
+            writer.write("noTag: " + noTag.replace('§','&') + "\n");
+            writer.write("# The message sent when a tag could not be found.\n");
+            writer.write("tagNotFound: " + noTag.replace('§','&') + "\n");
             writer.write("# -- Disable Subcommand --\n");
             writer.write("# The message sent when the plugin is already disabled.\n");
             writer.write("alreadyDisabled: " + alreadyDisabled.replace('§','&') + "\n");
@@ -196,8 +214,6 @@ public class Lang {
             writer.write("# -- Enable Subcommand --\n");
             writer.write("# The message sent when the plugin is enabled.\n");
             writer.write("enable: " + enable.replace('§','&') + "\n");
-            writer.write("# The message sent on how to re-disable the plugin.\n");
-            writer.write("reDisable: " + reDisable.replace('§','&') + "\n");
             writer.write("# The message sent to console when the plugin is enabled.\n");
             writer.write("enabled: " + enabled.replace('§','&') + "\n");
             writer.write("# The message sent when attempting to enable the plugin and its already enabled.\n");
