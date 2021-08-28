@@ -5,9 +5,12 @@ A plugin for Spigot and Paper Minecraft servers which allows the creation and cu
 - __nametagmaker.update__ - _Anytime a player joins with this permission a check is made to see if the plugin is up to date. If it's not they get annoyed with a message._ <br />
 ## Commands
 - __/nametag__ - Displays plugin status and version information
+- __/nametag create__ - Creates a new group. You can even specify things like assignment permissions, colors, prefixes and a lot more.
 - __/nametag disable__ - Disables the plugin during runtime in case of emergencies or just desire to disable it.
+- __/nametag edit <tag>__ - Modifies an existing group overriding values.
 - __/nametag enable__ - Enables the plugin during runtime if for some reason it was disabled.
 - __/nametag help__ - Sends a list of all the commands for the plugin.
+- __/nametag info <tag>__ - Displays a hopefully easy to read chat section about the given group.
 - __/nametag refresh__ - Refreshes the nametags of all players currently logged into the game.
 - __/nametag reload__ - Reloads the configuration, language, and tags files after which it also refreshes the nametags of all players.
 ## Configuration
