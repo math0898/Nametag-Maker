@@ -10,7 +10,6 @@ import org.bukkit.command.TabCompleter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * This is the main command for interacting with the plugin as a whole.
@@ -112,7 +111,34 @@ public class MainCommand implements CommandExecutor {
      * @param args The arguments of the command.
      */
     private void editSubcommand (CommandSender sender, String[] args) {
-        //TODO: Implement
+        if (args.length < 3) {
+            sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + " - (edit)");
+            sender.sendMessage(Lang.prefix + "This is hard to explain in game. Here's a link to the wiki article.");
+            sender.sendMessage("https://github.com/math0898/Nametag-Maker/wiki/Commandline-Editor");
+            return;
+        }
+        TagGroup ref = Tags.findTeam(args[1]);
+        if (ref == null) {
+            sender.sendMessage(Lang.prefix + ChatColor.RED + "We could not find that team.");
+            return;
+        }
+        StringBuilder input = new StringBuilder();
+        input.append("name:").append(args[1]);
+        for (int i = 2; i < args.length; i++) input.append(" ").append(args[i]);
+        TagGroup remade = TagGroup.parseTag(input.toString());
+        if (remade == null) return;
+        if (!ref.name.equals(remade.name)) ref.name = remade.name;
+        if (ref.visible != remade.visible) ref.setVisible(remade.visible);
+        if (ref.weight != remade.weight) ref.setWeight(remade.weight);
+        if (!ref.permission.equals(remade.permission)) ref.setPermission(remade.permission);
+        if (!ref.prefix.equals(remade.prefix)) ref.setPrefix(remade.prefix);
+        if (!ref.suffix.equals(remade.suffix)) ref.setSuffix(remade.suffix);
+        if (remade.color != null) if (ref.color != remade.color) ref.setColor(remade.color.toString());
+        Tags.save();
+        NametagApplier.clean();
+        NametagApplier.init();
+        NametagApplier.refresh();
+        sender.sendMessage(Lang.prefix + "Modified group " + ChatColor.GOLD + ref.name + ChatColor.GRAY + ".");
     }
 
     /**
