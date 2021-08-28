@@ -35,9 +35,12 @@ public class MainCommand implements CommandExecutor {
     @Override
     public boolean onCommand (CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) usage(sender);
+        else if (args[0].equalsIgnoreCase("create")) createSubcommand(sender, args);
         else if (args[0].equalsIgnoreCase("disable")) disableSubcommand(sender);
+        else if (args[0].equalsIgnoreCase("edit")) editSubcommand(sender, args);
         else if (args[0].equalsIgnoreCase("enable")) enableSubcommand(sender);
         else if (args[0].equalsIgnoreCase("help")) helpSubcommand(sender);
+        else if (args[0].equalsIgnoreCase("info")) infoSubcommand(sender, args);
         else if (args[0].equalsIgnoreCase("refresh")) refreshSubcommand(sender);
         else if (args[0].equalsIgnoreCase("reload")) reloadSubcommand(sender);
         else sender.sendMessage(Lang.prefix + Lang.unrecognized);
@@ -58,6 +61,34 @@ public class MainCommand implements CommandExecutor {
     }
 
     /**
+     * Creates a new tag which is then saved at tags.yml.
+     *
+     * @param sender Source of the command.
+     * @param args The arguments of the command.
+     */
+    private void createSubcommand (CommandSender sender, String[] args) {
+        if (args.length < 2) {
+            sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + " - (create)");
+            sender.sendMessage(Lang.prefix + "This is hard to explain in game. Here's a link to the wiki article.");
+            sender.sendMessage("https://github.com/math0898/Nametag-Maker/wiki/Commandline-Editor");
+            return;
+        }
+        StringBuilder input = new StringBuilder();
+        for (int i = 1; i < args.length; i++) input.append(" ").append(args[i]);
+        TagGroup tag = TagGroup.parseTag(input.toString());
+        if (tag == null) {
+            sender.sendMessage(Lang.prefix + ChatColor.RED + "You " + ChatColor.UNDERLINE + "MUST" + ChatColor.RESET + ChatColor.RED + " specify a name with name:<name>");
+            return;
+        }
+        Tags.groups.add(tag);
+        Tags.save();
+        NametagApplier.clean();
+        NametagApplier.init();
+        NametagApplier.refresh();
+        sender.sendMessage(Lang.prefix + "Created new group " + ChatColor.GOLD + tag.name + ChatColor.GRAY + ".");
+    }
+
+    /**
      * Disables the plugin so that none of the functionality works other than this command. This only applies for to
      * runtime and will be overridden with config.yml on reload or restart.
      *
@@ -71,6 +102,43 @@ public class MainCommand implements CommandExecutor {
             sender.sendMessage(Lang.prefix + Lang.reEnable);
             Bukkit.getConsoleSender().sendMessage(Lang.prefix + sender.getName() + Lang.disabled);
         } else sender.sendMessage(Lang.prefix + Lang.alreadyDisabled);
+    }
+
+    /**
+     * Edits a given tag allowing the modification and addition of new values.
+     *
+     * @param sender Source of the command.
+     * @param args The arguments of the command.
+     */
+    private void editSubcommand (CommandSender sender, String[] args) {
+        if (args.length < 3) {
+            sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + " - (edit)");
+            sender.sendMessage(Lang.prefix + "This is hard to explain in game. Here's a link to the wiki article.");
+            sender.sendMessage("https://github.com/math0898/Nametag-Maker/wiki/Commandline-Editor");
+            return;
+        }
+        TagGroup ref = Tags.findTeam(args[1]);
+        if (ref == null) {
+            sender.sendMessage(Lang.prefix + ChatColor.RED + "We could not find that team.");
+            return;
+        }
+        StringBuilder input = new StringBuilder();
+        input.append("name:").append(args[1]);
+        for (int i = 2; i < args.length; i++) input.append(" ").append(args[i]);
+        TagGroup remade = TagGroup.parseTag(input.toString());
+        if (remade == null) return;
+        if (!ref.name.equals(remade.name)) ref.name = remade.name;
+        if (ref.visible != remade.visible) ref.setVisible(remade.visible);
+        if (ref.weight != remade.weight) ref.setWeight(remade.weight);
+        if (!ref.permission.equals(remade.permission)) ref.setPermission(remade.permission);
+        if (!ref.prefix.equals(remade.prefix)) ref.setPrefix(remade.prefix);
+        if (!ref.suffix.equals(remade.suffix)) ref.setSuffix(remade.suffix);
+        if (remade.color != null) if (ref.color != remade.color) ref.setColor(remade.color.toString());
+        Tags.save();
+        NametagApplier.clean();
+        NametagApplier.init();
+        NametagApplier.refresh();
+        sender.sendMessage(Lang.prefix + "Modified group " + ChatColor.GOLD + ref.name + ChatColor.GRAY + ".");
     }
 
     /**
@@ -100,11 +168,53 @@ public class MainCommand implements CommandExecutor {
         if (Config.enabled) e = ChatColor.GREEN + "Enabled";
         else e = ChatColor.RED + "Disabled";
         sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + main.version + " - " + e);
-        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/nametag disable");
-        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/nametag enable");
-        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/nametag help");
-        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/nametag refresh");
-        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/nametag reload");
+        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm create <name> <args>");
+        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm disable");
+        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm edit <tag> <args>");
+        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm enable");
+        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm help");
+        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm info <tag>");
+        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm refresh");
+        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm reload");
+    }
+
+    /**
+     * Sends all the information of the given tag to the command sender.
+     *
+     * @param sender Source of the command.
+     * @param args The arguments of the command.
+     */
+    private void infoSubcommand (CommandSender sender, String[] args) {
+        if (args.length < 2) {
+            sender.sendMessage(Lang.prefix + Lang.noTag);
+            return;
+        }
+        TagGroup g = null;
+        for (TagGroup t: Tags.groups) if (args[1].equalsIgnoreCase(t.name)) {
+            g = t;
+            break;
+        }
+        if (g == null) {
+            sender.sendMessage(Lang.prefix + Lang.tagNotFound);
+            return;
+        }
+        String e;
+        if (Config.enabled) e = ChatColor.GREEN + "Enabled";
+        else e = ChatColor.RED + "Disabled";
+        sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + main.version + " - " + e);
+        sender.sendMessage(ChatColor.GRAY + "> name: " + ChatColor.GOLD + g.name);
+        sender.sendMessage(ChatColor.GRAY + "> prefix: \"" + g.prefix + ChatColor.GRAY + "\"");
+        sender.sendMessage(ChatColor.GRAY + "> suffix: \"" + g.suffix + ChatColor.GRAY + "\"");
+        sender.sendMessage(ChatColor.GRAY + "> color: " + g.color + "&" + g.color.getChar());
+        sender.sendMessage(ChatColor.GRAY + "> permission: " + ChatColor.LIGHT_PURPLE + g.permission);
+        if (g.visible) sender.sendMessage(ChatColor.GRAY + "> visible: " + ChatColor.GREEN + "true");
+        else sender.sendMessage(ChatColor.GRAY + "> visible: " + ChatColor.RED + "false");
+        sender.sendMessage(ChatColor.GRAY + "> weight: " + ChatColor.BLUE + g.weight);
+        if (g.players.size() > 0) {
+            sender.sendMessage(ChatColor.GRAY + "> players: ");
+            for (String s: g.players) sender.sendMessage(ChatColor.GRAY + "  > " + ChatColor.AQUA + s);
+        }
+        sender.sendMessage(ChatColor.GRAY + "> preview: " + g.prefix + g.color + sender.getName() + g.suffix);
     }
 
     /**
@@ -162,15 +272,30 @@ class AutocompleteMainCommand implements TabCompleter {
      * to default to the command executor.
      */
     @Override
+    @SuppressWarnings("All")
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (command.getName().equalsIgnoreCase("nametag")) {
             ArrayList<String> list = new ArrayList<>();
-            String[] options = null;
-            if (args.length == 1) options = new String[]{ "disable", "enable", "help", "refresh", "reload" };
-            if (options == null) return null;
-            if (!args[args.length - 1].equals("")) {
-                for (String o : options) if (o.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) list.add(o);
-            } else list.addAll(Arrays.asList(options));
+            if (args.length == 1) list.addAll(Arrays.asList("create", "disable", "edit", "enable", "help", "info", "refresh", "reload"));
+            else if (args.length == 2) {
+                if (args[0].equalsIgnoreCase("create")) list.add("name:");
+                else if (args[0].equalsIgnoreCase("edit") || args[0].equalsIgnoreCase("info")) {
+                    for (TagGroup g: Tags.groups) list.add(g.name);
+                    list.sort(String::compareTo);
+                }
+            } else if (args.length >= 3) {
+                String check = "";
+                for (String u: args) check += u;
+                if ((check.length() - check.replace("\"", "").length()) % 2 != 0) return list;
+                if (!check.contains("color:")) list.add("color:");
+                if (!check.contains("permission:")) list.add("permission:");
+                if (!check.contains("prefix:\"")) list.add("prefix:\"");
+                if (!check.contains("suffix:\"")) list.add("suffix:\"");
+                if (!check.contains("visible:")) list.add("visible:");
+                if (!check.contains("weight:")) list.add("weight:");
+                if (args[0].equalsIgnoreCase("edit")) if (!check.contains("name:")) list.add("name:");
+            }
+            if (!args[args.length - 1].equals("")) list.removeIf(o -> !o.toLowerCase().startsWith(args[args.length - 1].toLowerCase()));
             return list;
         }
         return null;

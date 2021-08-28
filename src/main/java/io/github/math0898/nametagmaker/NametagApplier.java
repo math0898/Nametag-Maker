@@ -69,7 +69,7 @@ public class NametagApplier implements Listener {
                 TagGroup currentTag = Tags.findTeam(current.getName());
                 if (currentTag != null) if (currentTag.weight >= g.weight) continue;
             }
-            if (g.permission != null) if (p.hasPermission(g.permission)) {
+            if (g.permission != null && g.permission != "null") if (p.hasPermission(g.permission)) {
                 if (current != null) current.removeEntry(p.getName());
                 Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nt-" + g.name).addEntry(p.getName());
             }
@@ -91,6 +91,6 @@ public class NametagApplier implements Listener {
             main.console("Scoreboard manager is not defined!", ChatColor.RED);
             return;
         }
-        for (TagGroup g: Tags.groups) Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nt-" + g.name).unregister();
+        for (Team t: Bukkit.getScoreboardManager().getMainScoreboard().getTeams()) if (t.getName().contains("nt-")) t.unregister();
     }
 }
