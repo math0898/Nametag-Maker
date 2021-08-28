@@ -76,7 +76,7 @@ public class MainCommand implements CommandExecutor {
         }
         StringBuilder input = new StringBuilder();
         for (int i = 1; i < args.length; i++) input.append(" ").append(args[i]);
-        TagGroup tag = parseTag(input.toString());
+        TagGroup tag = TagGroup.parseTag(input.toString());
         if (tag == null) {
             sender.sendMessage(Lang.prefix + ChatColor.RED + "You " + ChatColor.UNDERLINE + "MUST" + ChatColor.RESET + ChatColor.RED + " specify a name with name:<name>");
             return;
@@ -87,45 +87,6 @@ public class MainCommand implements CommandExecutor {
         NametagApplier.init();
         NametagApplier.refresh();
         sender.sendMessage(Lang.prefix + "Created new group " + ChatColor.GOLD + tag.name + ChatColor.GRAY + ".");
-    }
-
-    /**
-     * Parses a tag from the create-tag subcommand and then sends it off to be saved in tags.yml
-     *
-     * @param input The string input being parsed.
-     * @return What should be sent to the player.
-     */
-    public TagGroup parseTag (String input) {
-        if (!input.contains("name:")) return null;
-        String name = "";
-        String permission = null;
-        String prefix = null;
-        String suffix = null;
-        String color = ChatColor.WHITE.toString();
-        boolean visible = true;
-        int weight = 0;
-        Scanner s = new Scanner(input);
-        while (s.hasNext()) {
-            String read = s.next();
-            if (read.contains("name:")) name = read.replace("name:", "");
-            else if (read.contains("prefix:") || read.contains("suffix:")) {
-                String temp = read;
-                if (temp.length() - temp.replace("\"", "").length() != 2){
-                    while (!read.contains("\"") && s.hasNext()) {
-                        read = s.next();
-                        temp += " " + read;
-                    }
-                    main.console(read, ChatColor.GRAY);
-                    temp += read.replace("\"", "");
-                }
-                if (read.contains("prefix:")) prefix = temp.replace("\"", "").replace("prefix:", "");
-                else if (read.contains("suffix:")) suffix = temp.replace("\"", "").replace("suffix:", "");
-            } else if (read.contains("color:")) color = read.replace("color:&", "");
-            else if (read.contains("permission:")) permission = read.replace("permission:", "");
-            else if (read.contains("visible:")) visible = Boolean.parseBoolean(read.replace("visible:", ""));
-            else if (read.contains("weight:")) weight = Integer.parseInt(read.replace("weight:", ""));
-        }
-        return new TagGroup(name, color, null, prefix, suffix, permission, weight, visible);
     }
 
     /**
