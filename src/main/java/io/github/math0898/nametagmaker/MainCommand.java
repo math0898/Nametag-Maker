@@ -76,8 +76,17 @@ public class MainCommand implements CommandExecutor {
         }
         StringBuilder input = new StringBuilder();
         for (int i = 1; i < args.length; i++) input.append(" ").append(args[i]);
-        sender.sendMessage(parseTag(input.toString()));
+        TagGroup tag = parseTag(input.toString());
+        if (tag == null) {
+            sender.sendMessage(Lang.prefix + ChatColor.RED + "You " + ChatColor.UNDERLINE + "MUST" + ChatColor.RESET + ChatColor.RED + " specify a name with name:<name>");
+            return;
+        }
+        Tags.groups.add(tag);
+        Tags.save();
+        NametagApplier.clean();
+        NametagApplier.init();
         NametagApplier.refresh();
+        sender.sendMessage(Lang.prefix + "Created new group " + ChatColor.GOLD + tag.name + ChatColor.GRAY + ".");
     }
 
     /**
@@ -86,12 +95,12 @@ public class MainCommand implements CommandExecutor {
      * @param input The string input being parsed.
      * @return What should be sent to the player.
      */
-    public String parseTag (String input) {
-        if (!input.contains("name:")) return Lang.prefix + ChatColor.RED + "You MUST specify a name with name:<name>";
+    public TagGroup parseTag (String input) {
+        if (!input.contains("name:")) return null;
         String name = "";
         String permission = null;
-        String prefix = "";
-        String suffix = "";
+        String prefix = null;
+        String suffix = null;
         String color = ChatColor.WHITE.toString();
         boolean visible = true;
         int weight = 0;
@@ -110,24 +119,13 @@ public class MainCommand implements CommandExecutor {
                     temp += read.replace("\"", "");
                 }
                 if (read.contains("prefix:")) prefix = temp.replace("\"", "").replace("prefix:", "");
-                else if (read.contains("suffix:")) prefix = temp.replace("\"", "").replace("suffix:", "");
+                else if (read.contains("suffix:")) suffix = temp.replace("\"", "").replace("suffix:", "");
             } else if (read.contains("color:")) color = read.replace("color:&", "");
             else if (read.contains("permission:")) permission = read.replace("permission:", "");
             else if (read.contains("visible:")) visible = Boolean.parseBoolean(read.replace("visible:", ""));
             else if (read.contains("weight:")) weight = Integer.parseInt(read.replace("weight:", ""));
         }
-        TagGroup group = new TagGroup(name);
-        group.setPermission(permission);
-        group.setPrefix(prefix);
-        group.setSuffix(suffix);
-        group.setColor(color);
-        group.setVisible(visible);
-        group.setWeight(weight);
-        Tags.groups.add(group);
-        Tags.save();
-        NametagApplier.clean();
-        NametagApplier.init();
-        return Lang.prefix + "Created new group " + ChatColor.GOLD + name + ChatColor.GRAY + ".";
+        return new TagGroup(name, color, null, prefix, suffix, permission, weight, visible);
     }
 
     /**
