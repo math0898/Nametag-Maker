@@ -21,7 +21,7 @@ public final class main extends JavaPlugin {
     /**
      * String representation of the version of the plugin.
      */
-    public static String version = "v2.1.1";
+    public static String version = "v2.1.2";
 
     /**
      * A pointer to the java plugin.

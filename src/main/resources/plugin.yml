@@ -1,5 +1,5 @@
 name: NametagMaker
-version: 2.1.1
+version: 2.1.2
 main: io.github.math0898.nametagmaker.main
 api-version: 1.17
 prefix: Nametag Maker
