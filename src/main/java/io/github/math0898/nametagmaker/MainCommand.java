@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +34,10 @@ public class MainCommand implements CommandExecutor {
      * @return true if a valid command, otherwise false.
      */
     @Override
-    public boolean onCommand (CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand (@NotNull CommandSender sender,
+                              @NotNull Command command,
+                              @NotNull String label,
+                              String[] args) {
         if (args.length == 0) usage(sender);
         else if (args[0].equalsIgnoreCase("create")) createSubcommand(sender, args);
         else if (args[0].equalsIgnoreCase("disable")) disableSubcommand(sender);
@@ -125,15 +129,7 @@ public class MainCommand implements CommandExecutor {
         StringBuilder input = new StringBuilder();
         input.append("name:").append(args[1]);
         for (int i = 2; i < args.length; i++) input.append(" ").append(args[i]);
-        TagGroup remade = TagGroup.parseTag(input.toString());
-        if (remade == null) return;
-        if (!ref.name.equals(remade.name)) ref.name = remade.name;
-        if (ref.visible != remade.visible) ref.setVisible(remade.visible);
-        if (ref.weight != remade.weight) ref.setWeight(remade.weight);
-        if (!ref.permission.equals(remade.permission)) ref.setPermission(remade.permission);
-        if (!ref.prefix.equals(remade.prefix)) ref.setPrefix(remade.prefix);
-        if (!ref.suffix.equals(remade.suffix)) ref.setSuffix(remade.suffix);
-        if (remade.color != null) if (ref.color != remade.color) ref.setColor(remade.color.toString());
+        ref.sync(TagGroup.parseTag(input.toString()));
         Tags.save();
         NametagApplier.clean();
         NametagApplier.init();

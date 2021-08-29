@@ -21,7 +21,7 @@ public class TagGroup {
     /**
      * The color of the TagGroup.
      */
-    public ChatColor color = ChatColor.WHITE;
+    public ChatColor color = null;
 
     /**
      * A list of player names which should be assigned this group when they join.
@@ -31,12 +31,12 @@ public class TagGroup {
     /**
      * The prefix for this particular TagGroup.
      */
-    public String prefix = "";
+    public String prefix = null;
 
     /**
      * The suffix for this particular TagGroup.
      */
-    public String suffix = "";
+    public String suffix = null;
 
     /**
      * The permission node for this particular TagGroup.
@@ -46,12 +46,12 @@ public class TagGroup {
     /**
      * The weight for this particular TagGroup.
      */
-    public int weight = 0;
+    public Integer weight = null;
 
     /**
      * Whether this tag is visible.
      */
-    public boolean visible = true;
+    public Boolean visible = null;
 
     /**
      * Default constructor for a TagGroup. Simply requires a name.
@@ -155,22 +155,49 @@ public class TagGroup {
         while (s.hasNext()) {
             String read = s.next();
             if (read.contains("name:")) name = read.replace("name:", "");
-            else if (read.contains("prefix:") || read.contains("suffix:")) {
-                String temp = read;
-                if (temp.length() - temp.replace("\"", "").length() != 2){
-                    read = read.replace("\"", "");
-                    while (!read.contains("\"") && s.hasNext()) {
-                        read = s.next();
-                        temp += " " + read;
-                    }
-                }
-                if (temp.contains("prefix:")) prefix = temp.replace("\"", "").replace("prefix:", "");
-                else if (temp.contains("suffix:")) suffix = temp.replace("\"", "").replace("suffix:", "");
-            } else if (read.contains("color:")) color = read.replace("color:&", "");
+            else if (read.contains("prefix:")) prefix = parseQuotations(s, read);
+            else if (read.contains("suffix:")) suffix = parseQuotations(s, read);
+            else if (read.contains("color:")) color = read.replace("color:&", "");
             else if (read.contains("permission:")) permission = read.replace("permission:", "");
             else if (read.contains("visible:")) visible = Boolean.parseBoolean(read.replace("visible:", ""));
             else if (read.contains("weight:")) weight = Integer.parseInt(read.replace("weight:", ""));
         }
         return new TagGroup(name, color, null, prefix, suffix, permission, weight, visible);
+    }
+
+    /**
+     * A private helper method to turn a scanner into a suffix or prefix.
+     *
+     * @param scanner The scanner which holds the rest of the string.
+     * @param read The small section that was read to get to this point.
+     * @return The string which describes either the suffix or prefix.
+     */
+    private static String parseQuotations (Scanner scanner, String read) {
+        StringBuilder temp = new StringBuilder(read.replace("prefix:", "")
+                                                   .replace("suffix:", "").replace("\"",""));
+        if (temp.length() - temp.toString().replace("\"", "").length() != 2){
+            read = read.replace("\"", "");
+            while (!read.contains("\"") && scanner.hasNext()) {
+                read = scanner.next();
+                temp.append(" ").append(read.replace("\"", ""));
+            }
+        }
+        return temp.toString();
+    }
+
+    /**
+     * Updates this group with the information of another group given that it is both different and not a default value.
+     *
+     * @param mod The group which information is pulled from to update this group.
+     */
+    public void sync (TagGroup mod) {
+        if (mod == null) return;
+        if (!mod.name.equals(name)) name = mod.name;
+        if (mod.visible != null) visible = mod.visible;
+        if (mod.weight != null) weight = mod.weight;
+        if (mod.permission != null) permission = mod.permission;
+        if (mod.suffix != null) suffix = mod.suffix;
+        if (mod.prefix != null) prefix = mod.prefix;
+        if (mod.color != null) color = mod.color;
     }
 }

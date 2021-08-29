@@ -5,6 +5,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.logging.Level;
+
 /**
  * The main class of the plugin. From here everything is enabled and disabled on server startup and shutdown. This class
  * also serves as a good location to add some methods for logging to console.
@@ -29,12 +31,29 @@ public final class main extends JavaPlugin {
     public static JavaPlugin plugin = null;
 
     /**
-     * This method sends a message to the console.
+     * This method sends a message to the console and infers the level it should be sent at.
      *
      * @param message The message to send to the console.
      * @param color The main color of the message being sent.
      */
-    public static void console(String message, ChatColor color) { Bukkit.getConsoleSender().sendMessage(prefix + color + message); }
+    public static void console (String message, ChatColor color) {
+        switch (color) {
+            case RED -> console(message, color, Level.SEVERE);
+            case YELLOW -> console(message, color, Level.WARNING);
+            default -> console(message, color, Level.INFO);
+        }
+    }
+
+    /**
+     * This method sends a message to the console.
+     *
+     * @param message The message to send to the console.
+     * @param color The main color of the message being sent.
+     * @param lvl The level that the message should be sent at.
+     */
+    public static void console (String message, ChatColor color, Level lvl) {
+        plugin.getLogger().log(lvl, prefix + color + message);
+    }
 
     /**
      * Sends an ASCI art to the console... very important to the functionality of the plugin.

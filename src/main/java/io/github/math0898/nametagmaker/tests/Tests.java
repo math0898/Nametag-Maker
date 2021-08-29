@@ -41,7 +41,8 @@ class Tests {
         testColors.addAll(Arrays.asList("&b", "&e", "&7"));
         for (String s: testColors) {
             TagGroup g = TagGroup.parseTag("create name:test color:" + s);
-            assertEquals(s.replace("&", "").toCharArray()[0], g.color.getChar()); //Funky string vs char comparison issues
+            //Funky string vs char comparison issues.
+            assertEquals(s.replace("&", "").toCharArray()[0], g.color.getChar());
         }
 
         ArrayList<String> testPrefixes  = new ArrayList<>();
