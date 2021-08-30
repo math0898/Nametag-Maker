@@ -76,7 +76,7 @@ public class TagGroup {
      * @param visible Whether the tag is visible.
      */
     public TagGroup (String name, String color, ArrayList<String> players, String prefix, String suffix,
-                     String permission, int weight, boolean visible) {
+                     String permission, Integer weight, Boolean visible) {
         this.name = name;
         if (color != null) this.setColor(color);
         if (players != null) this.players = players;
@@ -149,8 +149,8 @@ public class TagGroup {
         String prefix = null;
         String suffix = null;
         String color = ChatColor.WHITE.toString();
-        boolean visible = true;
-        int weight = 0;
+        Boolean visible = null;
+        Integer weight = null;
         Scanner s = new Scanner(input);
         while (s.hasNext()) {
             String read = s.next();

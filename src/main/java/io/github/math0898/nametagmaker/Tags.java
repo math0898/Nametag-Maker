@@ -126,7 +126,6 @@ public class Tags {
      * @param n The string name of the requested team.
      */
     public static TagGroup findTeam (String n) {
-        main.console(n, ChatColor.RED);
         for (TagGroup g: groups) if (g.name.equals(n.replace("nt-", ""))) return g;
         return null;
     }
