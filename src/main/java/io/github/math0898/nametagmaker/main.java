@@ -63,8 +63,8 @@ public final class main extends JavaPlugin {
     public static void asciArt () {
         CommandSender console = Bukkit.getConsoleSender();
         console.sendMessage("");
-        console.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "  |\\ |"  + " ---" + " |\\  /|    " + ChatColor.RESET + prefix.replace("[", "").replace("]", "").replace("6","b") + ChatColor.DARK_GREEN + version);
-        console.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "  | \\|"  + "  | " + " | \\/ |    " + ChatColor.RESET + ChatColor.DARK_GRAY + "Server Version - " + Bukkit.getVersion());
+        console.sendMessage(ChatColor.GOLD + "" + "  |\\ |"  + " ---" + " |\\  /|    " + prefix.replace("[", "").replace("]", "").replace("6","b") + ChatColor.DARK_GREEN + version);
+        console.sendMessage(ChatColor.GOLD + "" + "  | \\|"  + "  | " + " | \\/ |    " + ChatColor.DARK_GRAY + "Server Version - " + Bukkit.getVersion());
         console.sendMessage("");
     }
 
