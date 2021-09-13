@@ -2,7 +2,7 @@ package io.github.math0898.nametagmaker;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
+//import org.bukkit.Color;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
