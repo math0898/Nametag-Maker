@@ -1,0 +1,14 @@
+# This is the default configuration file for the Nametag Maker plugin which is tested on a 1.17.1 paper
+# server for functionality. Please report bugs and request updates on github.
+# Github: https://www.github.com/math0898/Nametag-Maker
+# Donations: https://www.paypal.com/biz/fund?id=MB84KE9Z6NDDC
+
+
+# -------------
+# |  General  |
+# -------------
+general:
+  # Is the plugin enabled? (true/false)
+  enabled: true
+  # This is the prefix that nametag teams use. Make sure no other plugins create teams with this prefix.
+  prefix: 'nt-'

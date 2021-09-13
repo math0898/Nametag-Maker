@@ -40,10 +40,10 @@ public class NametagApplier implements Listener {
             s.registerNewTeam(name);
             Team t = s.getTeam(name);
             assert t != null;
-            t.setColor(g.color);
-            t.setPrefix(g.prefix);
-            t.setSuffix(g.suffix);
-            if (!g.visible) t.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
+            if (g.color != null) t.setColor(g.color);
+            if (g.prefix != null) t.setPrefix(g.prefix);
+            if (g.suffix != null) t.setSuffix(g.suffix);
+            if (g.visible != null) if (!g.visible) t.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
         }
     }
 
