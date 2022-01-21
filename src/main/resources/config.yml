@@ -2,11 +2,9 @@
 # server for functionality. Please report bugs and request updates on github.
 # Github: https://www.github.com/math0898/Nametag-Maker
 # Donations: https://www.paypal.com/biz/fund?id=MB84KE9Z6NDDC
-
-
-# -------------
-# |  General  |
-# -------------
+#
+#
+# ---- General ----
 general:
   # Is the plugin enabled? (true/false)
   enabled: true
