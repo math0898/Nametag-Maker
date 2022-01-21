@@ -1,5 +1,6 @@
-package io.github.math0898.nametagmaker;
+package io.github.math0898.nametagmaker.lang;
 
+import io.github.math0898.nametagmaker.main;
 import org.bukkit.ChatColor;
 
 import java.io.File;
@@ -14,7 +15,7 @@ import java.util.Scanner;
  *
  * @author Sugaku
  */
-public class Lang {
+public record Lang () {
 
     /**
      * The main prefix used for any messages sent during runtime.
@@ -118,7 +119,7 @@ public class Lang {
      * @return Whether initialization was a success or not.
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static boolean init() {
+    public static boolean init () {
         try {
             File container = new File("./plugins/NametagMaker/");
             if (!Files.exists(Paths.get(container.getPath()))) container.mkdir();
@@ -139,7 +140,7 @@ public class Lang {
      * @return Whether the reading the language was a success.
      */
     @SuppressWarnings("All")
-    public static boolean read() {
+    public static boolean read () {
         try {
             Scanner s = new Scanner(new File("./plugins/NametagMaker/lang.yml"));
             while (s.hasNextLine()) {
@@ -179,7 +180,7 @@ public class Lang {
      * @return Whether creating the language file was a success.
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static boolean create() {
+    public static boolean create () {
         try {
             File lang = new File("./plugins/NametagMaker/lang.yml");
             lang.delete();

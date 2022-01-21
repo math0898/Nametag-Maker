@@ -1,5 +1,6 @@
 package io.github.math0898.nametagmaker;
 
+import io.github.math0898.nametagmaker.lang.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
