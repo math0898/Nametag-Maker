@@ -38,8 +38,8 @@ public class Tags {
             return read();
         }
         catch (Exception exception) {
-            main.console("Could not create directories.",  ChatColor.RED);
-            main.console(exception.toString(), ChatColor.RED);
+            NametagMaker.console("Could not create directories.",  ChatColor.RED);
+            NametagMaker.console(exception.toString(), ChatColor.RED);
             return false;
         }
     }
@@ -69,8 +69,8 @@ public class Tags {
             }
             return true;
         } catch (Exception exception) {
-            main.console("Could not read file.",  ChatColor.RED);
-            main.console(exception.toString(), ChatColor.RED);
+            NametagMaker.console("Could not read file.",  ChatColor.RED);
+            NametagMaker.console(exception.toString(), ChatColor.RED);
             return false;
         }
     }
@@ -114,8 +114,8 @@ public class Tags {
             writer.close();
             return true;
         } catch (Exception exception) {
-            main.console("Could not create default file.",  ChatColor.RED);
-            main.console(exception.getMessage(), ChatColor.RED);
+            NametagMaker.console("Could not create default file.",  ChatColor.RED);
+            NametagMaker.console(exception.getMessage(), ChatColor.RED);
             return false;
         }
     }
@@ -173,8 +173,8 @@ public class Tags {
             }
             writer.close();
         } catch (IOException exception) {
-            main.console("Could not save tags.", ChatColor.RED);
-            main.console(exception.getMessage(), ChatColor.RED);
+            NametagMaker.console("Could not save tags.", ChatColor.RED);
+            NametagMaker.console(exception.getMessage(), ChatColor.RED);
         }
     }
 }
