@@ -15,7 +15,7 @@ import java.util.logging.Level;
  *
  * @author Sugaku
  */
-public final class main extends JavaPlugin {
+public final class NametagMaker extends JavaPlugin {
 
     /**
      * The prefix for messages sent to console for this plugin.

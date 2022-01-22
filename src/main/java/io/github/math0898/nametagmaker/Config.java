@@ -8,7 +8,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static io.github.math0898.nametagmaker.main.plugin;
+import static io.github.math0898.nametagmaker.NametagMaker.plugin;
 
 /**
  * This class handles the configuration for this plugin. It's used to read what admins have changed and write the
@@ -44,8 +44,8 @@ public record Config () {
             return read();
         }
         catch (Exception exception){
-            main.console("Could not create directories.",  ChatColor.RED);
-            main.console(exception.toString(), ChatColor.RED);
+            NametagMaker.console("Could not create directories.",  ChatColor.RED);
+            NametagMaker.console(exception.toString(), ChatColor.RED);
             return false;
         }
     }
@@ -60,8 +60,8 @@ public record Config () {
         try {
             config.load("./plugins/NametagMaker/config.yml");
         } catch (Exception exception) {
-            main.console("Could not read file.",  ChatColor.RED);
-            main.console(exception.toString(), ChatColor.RED);
+            NametagMaker.console("Could not read file.",  ChatColor.RED);
+            NametagMaker.console(exception.toString(), ChatColor.RED);
             return false;
         }
         enabled = config.getBoolean("general.enabled", false);

@@ -35,10 +35,7 @@ public class MainCommand implements CommandExecutor {
      * @return true if a valid command, otherwise false.
      */
     @Override
-    public boolean onCommand (@NotNull CommandSender sender,
-                              @NotNull Command command,
-                              @NotNull String label,
-                              String[] args) {
+    public boolean onCommand (@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 0) usage(sender);
         else if (args[0].equalsIgnoreCase("create")) createSubcommand(sender, args);
         else if (args[0].equalsIgnoreCase("disable")) disableSubcommand(sender);
@@ -61,7 +58,7 @@ public class MainCommand implements CommandExecutor {
         String e;
         if (Config.enabled) e = ChatColor.GREEN + "Enabled";
         else e = ChatColor.RED + "Disabled";
-        sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + main.version + " - " + e);
+        sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + NametagMaker.version + " - " + e);
         sender.sendMessage(Lang.prefix + Lang.useHelp);
     }
 
@@ -164,7 +161,7 @@ public class MainCommand implements CommandExecutor {
         String e;
         if (Config.enabled) e = ChatColor.GREEN + "Enabled";
         else e = ChatColor.RED + "Disabled";
-        sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + main.version + " - " + e);
+        sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + NametagMaker.version + " - " + e);
         sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm create <name> <args>");
         sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm disable");
         sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm edit <tag> <args>");
@@ -198,7 +195,7 @@ public class MainCommand implements CommandExecutor {
         String e;
         if (Config.enabled) e = ChatColor.GREEN + "Enabled";
         else e = ChatColor.RED + "Disabled";
-        sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + main.version + " - " + e);
+        sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + NametagMaker.version + " - " + e);
         sender.sendMessage(ChatColor.GRAY + "> name: " + ChatColor.GOLD + g.name);
         sender.sendMessage(ChatColor.GRAY + "> prefix: \"" + g.prefix + ChatColor.GRAY + "\"");
         sender.sendMessage(ChatColor.GRAY + "> suffix: \"" + g.suffix + ChatColor.GRAY + "\"");
@@ -270,7 +267,7 @@ class AutocompleteMainCommand implements TabCompleter {
      */
     @Override
     @SuppressWarnings("All")
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete (CommandSender sender, Command command, String alias, String[] args) {
         if (command.getName().equalsIgnoreCase("nametag")) {
             ArrayList<String> list = new ArrayList<>();
             if (args.length == 1) list.addAll(Arrays.asList("create", "disable", "edit", "enable", "help", "info", "refresh", "reload"));

@@ -31,7 +31,7 @@ public class UpdateChecker implements Listener {
      * @return true if and only if an update is available.
      */
     public static boolean canUpdate () {
-        String c = main.version;
+        String c = NametagMaker.version;
         String l = latest;
         if (l == null) return false;
         l = l.replace("v", "").replace(".", "");
@@ -46,7 +46,7 @@ public class UpdateChecker implements Listener {
      */
     @EventHandler
     public static void onJoin (PlayerJoinEvent event) {
-        Bukkit.getScheduler().runTaskAsynchronously(main.plugin, () -> joinAsync(event.getPlayer()));
+        Bukkit.getScheduler().runTaskAsynchronously(NametagMaker.plugin, () -> joinAsync(event.getPlayer()));
     }
 
     /**
@@ -61,13 +61,13 @@ public class UpdateChecker implements Listener {
                 Scanner s = new Scanner(stream);
                 if (s.hasNext()) latest = s.next();
             } catch (IOException ignored) {
-                main.console("Checking for updates failed!", ChatColor.RED);
+                NametagMaker.console("Checking for updates failed!", ChatColor.RED);
             }
             if (canUpdate()) {
                 String e;
                 if (Config.enabled) e = ChatColor.GREEN + "Enabled";
                 else e = ChatColor.RED + "Disabled";
-                p.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + main.version + " - " + e);
+                p.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + NametagMaker.version + " - " + e);
                 p.sendMessage(Lang.prefix + "Update to " + ChatColor.GREEN + latest + ChatColor.GRAY + " available!");
                 p.sendMessage(Lang.prefix + "https://spigotmc.org/resources/nametag-maker.95036/");
             }

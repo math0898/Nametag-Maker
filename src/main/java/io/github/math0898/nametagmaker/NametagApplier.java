@@ -88,7 +88,7 @@ public class NametagApplier implements Listener {
      */
     public static void clean () {
         if (Bukkit.getScoreboardManager() == null ) {
-            main.console("Scoreboard manager is not defined!", ChatColor.RED);
+            NametagMaker.console("Scoreboard manager is not defined!", ChatColor.RED);
             return;
         }
         for (Team t: Bukkit.getScoreboardManager().getMainScoreboard().getTeams()) if (t.getName().contains("nt-")) t.unregister();

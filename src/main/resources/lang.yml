@@ -1,0 +1,43 @@
+# Message Prefix
+prefix:  '&8[&9N&bM&8] &7'
+# ---- Command ----
+# The message sent when a command is not found
+unrecognized: '&cCommand not recognised.'
+# The message sent when mentioning /<MainCommand> help exists.
+useHelp: 'Use&a /nametag help&7 to see all commands.'
+# The message sent on how to re-enable the plugin.
+reEnable: 'Use &a/nametag enable&7 to re-enable without a reload.'
+# The message sent on how to re-disable the plugin.
+reDisable: 'Use &a/nametag disable&7 to disable without a reload.'
+# The message sent when a tag name is not specified.
+noTag: '&cPlease specify a tag name.'
+# The message sent when a tag could not be found.
+tagNotFound: '&cPlease specify a tag name.'
+# -- Disable Subcommand --
+# The message sent when the plugin is already disabled.
+alreadyDisabled: 'Already disabled. Use &a/nametag enable&7 to enable.'
+# The message sent when disabling the plugin is successful.
+disable: '&cDisabled. &7This will be overridden by config.yml on reload.'
+# The message sent to console when the plugin is disabled.
+disabled: '&e has disabled Nametag Maker.'
+# -- Enable Subcommand --
+# The message sent when the plugin is enabled.
+enable: '&aEnabled. &7This will be overridden by config.yml on reload'
+# The message sent to console when the plugin is enabled.
+enabled: '&e has enabled Nametag Maker.'
+# The message sent when attempting to enable the plugin and its already enabled.
+alreadyEnabled: 'Already enabled. Use &a/nametag disable&7 to disable.'
+# -- Refresh Subcommand --
+# The message sent when starting to refresh nametags.
+refreshing: 'Refreshing nametags...'
+# The message sent when finished refreshing nametags.
+refreshed: '&aAll nametags refreshed!'
+# The message sent when attempting to refresh whilst the plugin is disabled.
+refreshDisabled: '&cCannot refresh. Plugin disabled!'
+# -- Reload Subcommand --
+# The message sent when reloading the language and configuration files.
+reloading: 'Reloading lang and config...'
+# The message sent when reload is complete.
+reloaded: '&aReloaded lang and configuration!'
+# The message sent when reload fails.
+reloadFailed: '&cReload failed. If this problem persists consider deleting config.yml and lang.yml to reset them.'

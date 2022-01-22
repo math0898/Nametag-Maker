@@ -112,7 +112,7 @@ public enum MessageTypes {
      */
     public static List<String> getStrings () {
         List<String> strings = new ArrayList<>();
-        for (MessageTypes t : MessageTypes.values()) strings.add(t.toString().replace("_", "-"));
+        for (MessageTypes t : MessageTypes.values()) strings.add(t.toString().toLowerCase().replace("_", "-"));
         return strings;
     }
 }
