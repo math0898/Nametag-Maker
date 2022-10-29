@@ -1,6 +1,7 @@
 package io.github.math0898.nametagmaker;
 
 import io.github.math0898.nametagmaker.lang.Lang;
+import io.github.math0898.nametagmaker.logger.GeneralLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 //import org.bukkit.Color;
@@ -99,6 +100,7 @@ public final class NametagMaker extends JavaPlugin {
     public void onEnable() {
         long start = System.currentTimeMillis();
         plugin = this;
+        new GeneralLogger();
         asciArt();
         // Configuration loading
         console("Loading configuration...", ChatColor.GRAY);

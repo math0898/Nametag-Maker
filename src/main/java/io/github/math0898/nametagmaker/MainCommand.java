@@ -1,17 +1,15 @@
 package io.github.math0898.nametagmaker;
 
+import io.github.math0898.nametagmaker.commands.Subcommand;
+import io.github.math0898.nametagmaker.commands.subcommands.*;
 import io.github.math0898.nametagmaker.lang.Lang;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * This is the main command for interacting with the plugin as a whole.
@@ -26,6 +24,26 @@ public class MainCommand implements CommandExecutor {
     public static TabCompleter autocomplete = new AutocompleteMainCommand();
 
     /**
+     * A map of subcommands indexed by the first argument to invoke them.
+     */
+    private final Map<String, Subcommand> subcommands = new HashMap<>();
+
+    /**
+     * Creates the main nametagmaker command.
+     */
+    public MainCommand () { // TODO: Could a design pattern be used here?
+        subcommands.put("info", new InfoSubcommand());
+        subcommands.put("create", new CreateSubcommand());
+        subcommands.put("help", new HelpSubcommand());
+        subcommands.put("status", new StatusSubcommand());
+        subcommands.put("disable", new DisableSubcommand());
+        subcommands.put("edit", new EditSubcommand());
+        subcommands.put("enable", new EnableSubcommand());
+        subcommands.put("refresh", new RefreshSubcommand());
+        subcommands.put("reload", new ReloadSubcommand());
+    }
+
+    /**
      * Executes the main command behind the Nametag Maker plugin.
      *
      * @param sender  Source of the command.
@@ -36,212 +54,13 @@ public class MainCommand implements CommandExecutor {
      */
     @Override
     public boolean onCommand (@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (args.length == 0) usage(sender);
-        else if (args[0].equalsIgnoreCase("create")) createSubcommand(sender, args);
-        else if (args[0].equalsIgnoreCase("disable")) disableSubcommand(sender);
-        else if (args[0].equalsIgnoreCase("edit")) editSubcommand(sender, args);
-        else if (args[0].equalsIgnoreCase("enable")) enableSubcommand(sender);
-        else if (args[0].equalsIgnoreCase("help")) helpSubcommand(sender);
-        else if (args[0].equalsIgnoreCase("info")) infoSubcommand(sender, args);
-        else if (args[0].equalsIgnoreCase("refresh")) refreshSubcommand(sender);
-        else if (args[0].equalsIgnoreCase("reload")) reloadSubcommand(sender);
-        else sender.sendMessage(Lang.prefix + Lang.unrecognized);
+        if (args.length == 0) subcommands.get("status").execute(sender, args);
+        else {
+            Subcommand s = subcommands.get(args[0].toLowerCase());
+            if (s != null) return s.execute(sender, args);
+            else sender.sendMessage(Lang.prefix + Lang.unrecognized);
+        }
         return true;
-    }
-
-    /**
-     * Sends usage information to the given command sender.
-     *
-     * @param sender Source of the command.
-     */
-    private void usage (CommandSender sender) {
-        String e;
-        if (Config.enabled) e = ChatColor.GREEN + "Enabled";
-        else e = ChatColor.RED + "Disabled";
-        sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + NametagMaker.version + " - " + e);
-        sender.sendMessage(Lang.prefix + Lang.useHelp);
-    }
-
-    /**
-     * Creates a new tag which is then saved at tags.yml.
-     *
-     * @param sender Source of the command.
-     * @param args The arguments of the command.
-     */
-    private void createSubcommand (CommandSender sender, String[] args) {
-        if (args.length < 2) {
-            sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + " - (create)");
-            sender.sendMessage(Lang.prefix + "This is hard to explain in game. Here's a link to the wiki article.");
-            sender.sendMessage("https://github.com/math0898/Nametag-Maker/wiki/Commandline-Editor");
-            return;
-        }
-        StringBuilder input = new StringBuilder();
-        for (int i = 1; i < args.length; i++) input.append(" ").append(args[i]);
-        TagGroup tag = TagGroup.parseTag(input.toString());
-        if (tag == null) {
-            sender.sendMessage(Lang.prefix + ChatColor.RED + "You " + ChatColor.UNDERLINE + "MUST" + ChatColor.RESET + ChatColor.RED + " specify a name with name:<name>");
-            return;
-        }
-        Tags.groups.add(tag);
-        Tags.save();
-        NametagApplier.clean();
-        NametagApplier.init();
-        NametagApplier.refresh();
-        sender.sendMessage(Lang.prefix + "Created new group " + ChatColor.GOLD + tag.name + ChatColor.GRAY + ".");
-    }
-
-    /**
-     * Disables the plugin so that none of the functionality works other than this command. This only applies for to
-     * runtime and will be overridden with config.yml on reload or restart.
-     *
-     * @param sender Source of the command.
-     */
-    private void disableSubcommand (CommandSender sender) {
-        if (Config.enabled) {
-            NametagApplier.clean();
-            Config.enabled = false;
-            sender.sendMessage(Lang.prefix + Lang.disable);
-            sender.sendMessage(Lang.prefix + Lang.reEnable);
-            Bukkit.getConsoleSender().sendMessage(Lang.prefix + sender.getName() + Lang.disabled);
-        } else sender.sendMessage(Lang.prefix + Lang.alreadyDisabled);
-    }
-
-    /**
-     * Edits a given tag allowing the modification and addition of new values.
-     *
-     * @param sender Source of the command.
-     * @param args The arguments of the command.
-     */
-    private void editSubcommand (CommandSender sender, String[] args) {
-        if (args.length < 3) {
-            sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + " - (edit)");
-            sender.sendMessage(Lang.prefix + "This is hard to explain in game. Here's a link to the wiki article.");
-            sender.sendMessage("https://github.com/math0898/Nametag-Maker/wiki/Commandline-Editor");
-            return;
-        }
-        TagGroup ref = Tags.findTeam(args[1]);
-        if (ref == null) {
-            sender.sendMessage(Lang.prefix + ChatColor.RED + "We could not find that team.");
-            return;
-        }
-        StringBuilder input = new StringBuilder();
-        input.append("name:").append(args[1]);
-        for (int i = 2; i < args.length; i++) input.append(" ").append(args[i]);
-        ref.sync(TagGroup.parseTag(input.toString()));
-        Tags.save();
-        NametagApplier.clean();
-        NametagApplier.init();
-        NametagApplier.refresh();
-        sender.sendMessage(Lang.prefix + "Modified group " + ChatColor.GOLD + ref.name + ChatColor.GRAY + ".");
-    }
-
-    /**
-     * Enables the plugin so that the functionality of it will work again. This only applies for runtime and will be
-     * overridden with config.yml on reload or restart.
-     *
-     * @param sender Source of the command.
-     */
-    private void enableSubcommand (CommandSender sender) {
-        if (!Config.enabled) {
-            Config.enabled = true;
-            NametagApplier.init();
-            NametagApplier.refresh();
-            sender.sendMessage(Lang.prefix + Lang.enable);
-            sender.sendMessage(Lang.prefix + Lang.reDisable);
-            Bukkit.getConsoleSender().sendMessage(Lang.prefix + sender.getName() + Lang.enabled);
-        } else sender.sendMessage(Lang.prefix + Lang.alreadyEnabled);
-    }
-
-    /**
-     * Sends help information to the given command sender.
-     *
-     * @param sender Source of the command.
-     */
-    private void helpSubcommand (CommandSender sender) {
-        String e;
-        if (Config.enabled) e = ChatColor.GREEN + "Enabled";
-        else e = ChatColor.RED + "Disabled";
-        sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + NametagMaker.version + " - " + e);
-        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm create <name> <args>");
-        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm disable");
-        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm edit <tag> <args>");
-        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm enable");
-        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm help");
-        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm info <tag>");
-        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm refresh");
-        sender.sendMessage(ChatColor.GRAY + "> " + ChatColor.GREEN + "/ntm reload");
-    }
-
-    /**
-     * Sends all the information of the given tag to the command sender.
-     *
-     * @param sender Source of the command.
-     * @param args The arguments of the command.
-     */
-    private void infoSubcommand (CommandSender sender, String[] args) {
-        if (args.length < 2) {
-            sender.sendMessage(Lang.prefix + Lang.noTag);
-            return;
-        }
-        TagGroup g = null;
-        for (TagGroup t: Tags.groups) if (args[1].equalsIgnoreCase(t.name)) {
-            g = t;
-            break;
-        }
-        if (g == null) {
-            sender.sendMessage(Lang.prefix + Lang.tagNotFound);
-            return;
-        }
-        String e;
-        if (Config.enabled) e = ChatColor.GREEN + "Enabled";
-        else e = ChatColor.RED + "Disabled";
-        sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + NametagMaker.version + " - " + e);
-        sender.sendMessage(ChatColor.GRAY + "> name: " + ChatColor.GOLD + g.name);
-        sender.sendMessage(ChatColor.GRAY + "> prefix: \"" + g.prefix + ChatColor.GRAY + "\"");
-        sender.sendMessage(ChatColor.GRAY + "> suffix: \"" + g.suffix + ChatColor.GRAY + "\"");
-        sender.sendMessage(ChatColor.GRAY + "> color: " + g.color + "&" + g.color.getChar());
-        sender.sendMessage(ChatColor.GRAY + "> permission: " + ChatColor.LIGHT_PURPLE + g.permission);
-        if (g.visible) sender.sendMessage(ChatColor.GRAY + "> visible: " + ChatColor.GREEN + "true");
-        else sender.sendMessage(ChatColor.GRAY + "> visible: " + ChatColor.RED + "false");
-        sender.sendMessage(ChatColor.GRAY + "> weight: " + ChatColor.BLUE + g.weight);
-        if (g.players.size() > 0) {
-            sender.sendMessage(ChatColor.GRAY + "> players: ");
-            for (String s: g.players) sender.sendMessage(ChatColor.GRAY + "  > " + ChatColor.AQUA + s);
-        }
-        sender.sendMessage(ChatColor.GRAY + "> preview: " + g.prefix + g.color + sender.getName() + g.suffix);
-    }
-
-    /**
-     * Refreshes the nametags of all players currently on the server.
-     *
-     * @param sender Sender of the command.
-     */
-    private void refreshSubcommand (CommandSender sender) {
-        if (Config.enabled) {
-            sender.sendMessage(Lang.prefix + Lang.refreshing);
-            NametagApplier.refresh();
-            sender.sendMessage(Lang.prefix + Lang.refreshed);
-        } else {
-            sender.sendMessage(Lang.prefix + Lang.refreshDisabled);
-            sender.sendMessage(Lang.prefix + Lang.reEnable);
-        }
-    }
-
-    /**
-     * Reloads the configuration and lang files for the server.
-     *
-     * @param sender Source of the command.
-     */
-    private void reloadSubcommand (CommandSender sender) {
-        sender.sendMessage(Lang.prefix + Lang.reloading);
-        long start = System.currentTimeMillis();
-        if (Config.read() && Lang.read()) {
-            NametagApplier.clean();
-            NametagApplier.init();
-            NametagApplier.refresh();
-            sender.sendMessage(Lang.prefix + Lang.reloaded);
-            sender.sendMessage(Lang.prefix + "Took: " + (System.currentTimeMillis() - start) + "ms");
-        } else sender.sendMessage(Lang.prefix + Lang.reloadFailed);
     }
 }
 

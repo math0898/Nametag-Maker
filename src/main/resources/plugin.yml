@@ -15,5 +15,4 @@ commands:
     description: Serves as the main command to interact with the Nametag Maker plugin.
     permission: nametagmaker.admin
     permission-message: You do not have access to that command.
-    usage: Hello world!
     aliases: ntm
