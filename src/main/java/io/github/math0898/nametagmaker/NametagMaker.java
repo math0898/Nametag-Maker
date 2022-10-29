@@ -1,7 +1,11 @@
 package io.github.math0898.nametagmaker;
 
+import io.github.math0898.nametagmaker.commands.MainCommand;
+import io.github.math0898.nametagmaker.lang.Lang;
+import io.github.math0898.nametagmaker.logger.GeneralLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+//import org.bukkit.Color;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,7 +17,7 @@ import java.util.logging.Level;
  *
  * @author Sugaku
  */
-public final class main extends JavaPlugin {
+public final class NametagMaker extends JavaPlugin {
 
     /**
      * The prefix for messages sent to console for this plugin.
@@ -23,7 +27,7 @@ public final class main extends JavaPlugin {
     /**
      * String representation of the version of the plugin.
      */
-    public static String version = "v2.1.2";
+    public static String version = "v2.1.3";
 
     /**
      * A pointer to the java plugin.
@@ -63,8 +67,29 @@ public final class main extends JavaPlugin {
     public static void asciArt () {
         CommandSender console = Bukkit.getConsoleSender();
         console.sendMessage("");
-        console.sendMessage(ChatColor.GOLD + "" + "  |\\ |"  + " ---" + " |\\  /|    " + prefix.replace("[", "").replace("]", "").replace("6","b") + ChatColor.DARK_GREEN + version);
-        console.sendMessage(ChatColor.GOLD + "" + "  | \\|"  + "  | " + " | \\/ |    " + ChatColor.DARK_GRAY + "Server Version - " + Bukkit.getVersion());
+        String[] array = { "  _   _                      _                __  __       _                         ",
+                           " | \\ | | __ _ _ __ ___   ___| |_ __ _  __ _  |  \\/  | __ _| | _____ _ __           ",
+                           " |  \\| |/ _` | '_ ` _ \\ / _ \\ __/ _` |/ _` | | |\\/| |/ _` | |/ / _ \\ '__|       ",
+                           " | |\\  | (_| | | | | | |  __/ || (_| | (_| | | |  | | (_| |   <  __/ |              ",
+                           " |_| \\_|\\__,_|_| |_| |_|\\___|\\__\\__,_|\\__, | |_|  |_|\\__,_|_|\\_\\___|_|      ",
+                           "                                      |___/                                          "};
+//        Color[] colors = new Color[78];
+//        Color c1 = Color.fromRGB(42, 16, 159);
+//        Color c2 = Color.fromRGB(50, 237, 43);
+//        double deltaR =  (c2.getRed() - c1.getRed())/78.0;
+//        double deltaG = (c2.getGreen() - c1.getGreen())/78.0;
+//        double deltaB = (c2.getBlue() - c1.getBlue())/78.0;
+//        for (int i = 0; i < 78; i++) colors[i] = Color.fromRGB((int) ( c1.getRed() + (deltaR * i)),
+//                                                               (int) (c1.getGreen() + (deltaG * i)),
+//                                                               (int) (c1.getBlue() + (deltaB * i)));
+        for (int j = 0; j < 6; j++) {
+            StringBuilder line = new StringBuilder();
+            for (int i = j; i < 73 + j; i++) line.append(array[j].charAt(i-j));
+            console.sendMessage(line.toString());
+        }
+        console.sendMessage("");
+        console.sendMessage(prefix.replace("[", "").replace("]", "").replace("6","b") + ChatColor.DARK_GREEN + version);
+        console.sendMessage(ChatColor.DARK_GRAY + "Server Version - " + Bukkit.getVersion());
         console.sendMessage("");
     }
 
@@ -75,8 +100,9 @@ public final class main extends JavaPlugin {
     @SuppressWarnings("all")
     public void onEnable() {
         long start = System.currentTimeMillis();
-        asciArt();
         plugin = this;
+        new GeneralLogger();
+        asciArt();
         // Configuration loading
         console("Loading configuration...", ChatColor.GRAY);
         if (!Config.init()) console("Failed to load configuration!", ChatColor.RED);
@@ -84,8 +110,9 @@ public final class main extends JavaPlugin {
         if (!Lang.init()) console("Failed to load language!", ChatColor.RED);
         // Initializing Commands
         try {
-            this.getCommand("nametag").setExecutor(new MainCommand()); //May produce null pointer
-            this.getCommand("nametag").setTabCompleter(MainCommand.autocomplete); //May produce null pointer
+            MainCommand m = new MainCommand();
+            this.getCommand("nametag").setExecutor(m); //May produce null pointer
+            this.getCommand("nametag").setTabCompleter(m); //May produce null pointer
         } catch (NullPointerException exception) {
             console("Could not setup commands.", ChatColor.RED);
             console(exception.toString(), ChatColor.RED);

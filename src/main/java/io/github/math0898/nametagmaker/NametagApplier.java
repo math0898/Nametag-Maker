@@ -40,10 +40,10 @@ public class NametagApplier implements Listener {
             s.registerNewTeam(name);
             Team t = s.getTeam(name);
             assert t != null;
-            t.setColor(g.color);
-            t.setPrefix(g.prefix);
-            t.setSuffix(g.suffix);
-            if (!g.visible) t.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
+            if (g.color != null) t.setColor(g.color);
+            if (g.prefix != null) t.setPrefix(g.prefix);
+            if (g.suffix != null) t.setSuffix(g.suffix);
+            if (g.visible != null) if (!g.visible) t.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
         }
     }
 
@@ -88,7 +88,7 @@ public class NametagApplier implements Listener {
      */
     public static void clean () {
         if (Bukkit.getScoreboardManager() == null ) {
-            main.console("Scoreboard manager is not defined!", ChatColor.RED);
+            NametagMaker.console("Scoreboard manager is not defined!", ChatColor.RED);
             return;
         }
         for (Team t: Bukkit.getScoreboardManager().getMainScoreboard().getTeams()) if (t.getName().contains("nt-")) t.unregister();

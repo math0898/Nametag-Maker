@@ -6,14 +6,14 @@
 
     <groupId>io.github.math0898</groupId>
     <artifactId>NametagMaker</artifactId>
-    <version>2.1.2</version>
+    <version>3.1.1</version>
     <packaging>jar</packaging>
 
     <name>NametagMaker</name>
 
     <description>Allows the creation and customization of nametags for Minecraft servers.</description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <url>https://www.github.com/math0898/Nametag-Maker</url>
@@ -73,21 +73,15 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.10</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
+            <version>5.8.2</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
+            <version>22.0.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

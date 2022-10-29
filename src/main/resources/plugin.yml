@@ -1,7 +1,7 @@
 name: NametagMaker
-version: 2.1.2
-main: io.github.math0898.nametagmaker.main
-api-version: 1.17
+version: '${project.version}'
+main: io.github.math0898.nametagmaker.NametagMaker
+api-version: 1.18
 prefix: Nametag Maker
 authors: [ Sugaku ]
 description: Allows the creation and customization of nametags for Minecraft servers.
@@ -15,5 +15,4 @@ commands:
     description: Serves as the main command to interact with the Nametag Maker plugin.
     permission: nametagmaker.admin
     permission-message: You do not have access to that command.
-    usage: Hello world!
     aliases: ntm

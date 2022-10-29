@@ -1,4 +1,4 @@
-package io.github.math0898.nametagmaker.tests;
+package io.github.math0898;
 
 import io.github.math0898.nametagmaker.TagGroup;
 import org.junit.jupiter.api.Assertions;
