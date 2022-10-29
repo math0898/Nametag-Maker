@@ -1,4 +1,4 @@
-# Nametag Maker
+# Nametag Maker [![Maintainability](https://api.codeclimate.com/v1/badges/11d1267fff64e9af003a/maintainability)](https://codeclimate.com/github/math0898/Nametag-Maker/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/11d1267fff64e9af003a/test_coverage)](https://codeclimate.com/github/math0898/Nametag-Maker/test_coverage)
 A plugin for Spigot and Paper Minecraft servers which allows the creation and customization of nametags. 
 ## Permissions
 - __nametagmaker.admin__ - _The admin permission for Nametag Maker. Allows access to commands and in game nametag editors._ <br />
