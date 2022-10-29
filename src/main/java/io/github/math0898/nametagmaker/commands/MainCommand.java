@@ -109,6 +109,7 @@ class AutocompleteMainCommand implements TabCompleter {
                 if (!check.contains("weight:")) list.add("weight:");
                 if (args[0].equalsIgnoreCase("edit")) if (!check.contains("name:")) list.add("name:");
             }
+            list.sort(String::compareTo);
             if (!args[args.length - 1].equals("")) list.removeIf(o -> !o.toLowerCase().startsWith(args[args.length - 1].toLowerCase()));
             return list;
         }

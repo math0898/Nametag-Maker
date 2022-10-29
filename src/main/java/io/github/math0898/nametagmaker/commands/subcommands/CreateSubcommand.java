@@ -24,9 +24,7 @@ public class CreateSubcommand implements Subcommand {
     @Override
     public boolean execute (CommandSender sender, String[] args) {
         if (args.length < 2) {
-            sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + " - (create)");
-            sender.sendMessage(Lang.prefix + "This is hard to explain in game. Here's a link to the wiki article.");
-            sender.sendMessage("https://github.com/math0898/Nametag-Maker/wiki/Commandline-Editor");
+            Lang.sendEditorHelp(sender, "create");
             return false;
         }
         StringBuilder input = new StringBuilder();

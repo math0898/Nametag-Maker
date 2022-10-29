@@ -3,6 +3,7 @@ package io.github.math0898.nametagmaker.lang;
 import io.github.math0898.nametagmaker.Config;
 import io.github.math0898.nametagmaker.NametagMaker;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -191,5 +192,17 @@ public record Lang () {
         if (Config.enabled) e = ChatColor.GREEN + "Enabled";
         else e = ChatColor.RED + "Disabled";
         return Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + NametagMaker.version + " - " + e;
+    }
+
+    /**
+     * Sends editor help to the given player. // TODO: Perhaps add to an editor class.
+     *
+     * @param sender The target to send editor help to.
+     * @param name   The name to credit this help from.
+     */
+    public static void sendEditorHelp (CommandSender sender, String name) {
+        sender.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + " - (" + name + ")");
+        sender.sendMessage(Lang.prefix + "This is hard to explain in game. Here's a link to the wiki article.");
+        sender.sendMessage("https://github.com/math0898/Nametag-Maker/wiki/Commandline-Editor");
     }
 }
