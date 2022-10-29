@@ -1,5 +1,6 @@
 package io.github.math0898.nametagmaker.commands.subcommands;
 
+import io.github.math0898.nametagmaker.Editor;
 import io.github.math0898.nametagmaker.NametagApplier;
 import io.github.math0898.nametagmaker.TagGroup;
 import io.github.math0898.nametagmaker.Tags;
@@ -56,18 +57,11 @@ public class EditSubcommand implements Subcommand {
     @Override
     public Collection<String> tabOptions (CommandSender sender, String[] args) {
         Collection<String> list = new ArrayList<>();
-        if (args.length == 2) for (TagGroup g: Tags.groups) list.add(g.name);
+        if (args.length == 2) list.addAll(Tags.getTagNames());
         else if (args.length >= 3) {
             String check = "";
             for (String u: args) check += u;
-            if ((check.length() - check.replace("\"", "").length()) % 2 != 0) return list;
-            if (!check.contains("color:")) list.add("color:");
-            if (!check.contains("permission:")) list.add("permission:");
-            if (!check.contains("prefix:\"")) list.add("prefix:\"");
-            if (!check.contains("suffix:\"")) list.add("suffix:\"");
-            if (!check.contains("visible:")) list.add("visible:");
-            if (!check.contains("weight:")) list.add("weight:");
-            if (!check.contains("name:")) list.add("name:");
+            list.addAll(Editor.addMissingOptions(check));
         }
         return list;
     }

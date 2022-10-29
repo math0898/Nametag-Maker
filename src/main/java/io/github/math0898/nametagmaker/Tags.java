@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -176,5 +177,16 @@ public class Tags {
             NametagMaker.console("Could not save tags.", ChatColor.RED);
             NametagMaker.console(exception.getMessage(), ChatColor.RED);
         }
+    }
+
+    /**
+     * Used to compute and access a list of all the names of tags.
+     *
+     * @return The full list of tag names.
+     */
+    public static List<String> getTagNames () {
+        ArrayList<String> toReturn = new ArrayList<>();
+        for (TagGroup g: groups) toReturn.add(g.name);
+        return toReturn;
     }
 }

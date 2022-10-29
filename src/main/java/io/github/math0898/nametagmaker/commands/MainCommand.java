@@ -85,16 +85,14 @@ public class MainCommand implements CommandExecutor, TabCompleter {
      */
     @Override
     public List<String> onTabComplete (@NotNull CommandSender sender, Command command, @NotNull String alias, String[] args) {
-        if (command.getName().equalsIgnoreCase("nametag")) {
-            ArrayList<String> list = new ArrayList<>();
-            if (args.length == 1) list.addAll(subcommands.keySet());
-            else {
-                Subcommand s = subcommands.get(args[0]);
-                if (s != null) list.addAll(s.tabOptions(sender, args));
-            }
-            list.sort(String::compareTo);
-            return removeBadCompletions(list, args);
+        if (!command.getName().equalsIgnoreCase("nametag")) return null;
+        ArrayList<String> list = new ArrayList<>();
+        if (args.length == 1) list.addAll(subcommands.keySet());
+        else {
+            Subcommand s = subcommands.get(args[0]);
+            if (s != null) list.addAll(s.tabOptions(sender, args));
         }
-        return null;
+        list.sort(String::compareTo);
+        return removeBadCompletions(list, args);
     }
 }

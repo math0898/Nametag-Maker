@@ -51,7 +51,7 @@ public class InfoSubcommand implements Subcommand {
     @Override
     public Collection<String> tabOptions (CommandSender sender, String[] args) {
         Collection<String> list = new ArrayList<>();
-        if (args.length == 2) for (TagGroup g: Tags.groups) list.add(g.name);
+        if (args.length == 2) list.addAll(Tags.getTagNames());
         return list;
     }
 }
