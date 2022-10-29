@@ -1,5 +1,6 @@
 package io.github.math0898.nametagmaker.lang;
 
+import io.github.math0898.nametagmaker.Config;
 import io.github.math0898.nametagmaker.NametagMaker;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -178,5 +179,17 @@ public record Lang () {
             NametagMaker.console(exception.toString(), ChatColor.RED);
             return false;
         }
+    }
+
+    /**
+     * Calculates the header to send to players when running NametagMaker commands.
+     *
+     * @return The string version of the header to send to players.
+     */
+    public static String generateHeader () {
+        String e;
+        if (Config.enabled) e = ChatColor.GREEN + "Enabled";
+        else e = ChatColor.RED + "Disabled";
+        return Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + NametagMaker.version + " - " + e;
     }
 }

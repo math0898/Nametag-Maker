@@ -1,6 +1,7 @@
 package io.github.math0898.nametagmaker;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -199,5 +200,27 @@ public class TagGroup {
         if (mod.suffix != null) suffix = mod.suffix;
         if (mod.prefix != null) prefix = mod.prefix;
         if (mod.color != null) color = mod.color;
+    }
+
+
+    /**
+     * Fancy prints this tag to the given player. // TODO: This violates separation of concerns. Perhaps do a toFancyString().
+     *
+     * @param sender The person to send the fancy version to.
+     */
+    public void fancyPrint (CommandSender sender) {
+        sender.sendMessage(ChatColor.GRAY + "> name: " + ChatColor.GOLD + name);
+        sender.sendMessage(ChatColor.GRAY + "> prefix: \"" + prefix + ChatColor.GRAY + "\"");
+        sender.sendMessage(ChatColor.GRAY + "> suffix: \"" + suffix + ChatColor.GRAY + "\"");
+        sender.sendMessage(ChatColor.GRAY + "> color: " + color + "&" + color.getChar());
+        sender.sendMessage(ChatColor.GRAY + "> permission: " + ChatColor.LIGHT_PURPLE + permission);
+        if (visible) sender.sendMessage(ChatColor.GRAY + "> visible: " + ChatColor.GREEN + "true");
+        else sender.sendMessage(ChatColor.GRAY + "> visible: " + ChatColor.RED + "false");
+        sender.sendMessage(ChatColor.GRAY + "> weight: " + ChatColor.BLUE + weight);
+        if (players.size() > 0) {
+            sender.sendMessage(ChatColor.GRAY + "> players: ");
+            for (String s: players) sender.sendMessage(ChatColor.GRAY + "  > " + ChatColor.AQUA + s);
+        }
+        sender.sendMessage(ChatColor.GRAY + "> preview: " + prefix + color + sender.getName() + suffix);
     }
 }
