@@ -1,6 +1,7 @@
-package io.github.math0898.nametagmaker;
+package io.github.math0898.nametagmaker.commands;
 
-import io.github.math0898.nametagmaker.commands.Subcommand;
+import io.github.math0898.nametagmaker.TagGroup;
+import io.github.math0898.nametagmaker.Tags;
 import io.github.math0898.nametagmaker.commands.subcommands.*;
 import io.github.math0898.nametagmaker.lang.Lang;
 import org.bukkit.command.Command;

@@ -1,5 +1,6 @@
 package io.github.math0898.nametagmaker;
 
+import io.github.math0898.nametagmaker.commands.MainCommand;
 import io.github.math0898.nametagmaker.lang.Lang;
 import io.github.math0898.nametagmaker.logger.GeneralLogger;
 import org.bukkit.Bukkit;
