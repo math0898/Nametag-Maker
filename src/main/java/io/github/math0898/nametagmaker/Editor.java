@@ -33,13 +33,8 @@ public class Editor {
     public static List<String> addMissingOptions (String current) {
         List<String> list = new ArrayList<>();
         if ((current.length() - current.replace("\"", "").length()) % 2 != 0) return list;
-        if (!current.contains("color:")) list.add("color:");
-        if (!current.contains("permission:")) list.add("permission:");
-        if (!current.contains("prefix:\"")) list.add("prefix:\"");
-        if (!current.contains("suffix:\"")) list.add("suffix:\"");
-        if (!current.contains("visible:")) list.add("visible:");
-        if (!current.contains("weight:")) list.add("weight:");
-        if (!current.contains("name:")) list.add("name:");
+        String[] options = new String[]{ "color:", "permission:", "prefix\"", "suffix:\"", "visible:", "weight:", "name:" };
+        for (String s : options) if (!current.contains(s)) list.add(s);
         return list;
     }
 }
