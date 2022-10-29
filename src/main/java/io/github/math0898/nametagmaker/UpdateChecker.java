@@ -64,10 +64,7 @@ public class UpdateChecker implements Listener {
                 NametagMaker.console("Checking for updates failed!", ChatColor.RED);
             }
             if (canUpdate()) {
-                String e;
-                if (Config.enabled) e = ChatColor.GREEN + "Enabled";
-                else e = ChatColor.RED + "Disabled";
-                p.sendMessage(Lang.prefix + ChatColor.GOLD + "Nametag " + ChatColor.AQUA + "Maker " + ChatColor.GRAY + NametagMaker.version + " - " + e);
+                p.sendMessage(Lang.generateHeader());
                 p.sendMessage(Lang.prefix + "Update to " + ChatColor.GREEN + latest + ChatColor.GRAY + " available!");
                 p.sendMessage(Lang.prefix + "https://spigotmc.org/resources/nametag-maker.95036/");
             }
