@@ -58,6 +58,19 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     }
 
     /**
+     * A helper method which removes all completions which can not be reached by adding letters to the current
+     * arguments. Does this purge in place and also returns the list.
+     *
+     * @param currentOptions The comprehensive list of potential completions.
+     * @param args           The arguments that have been written so far.
+     * @return The curated list of completions.
+     */
+    private List<String> removeBadCompletions (List<String> currentOptions, String[] args) {
+        if (!args[args.length - 1].equals("")) currentOptions.removeIf(o -> !o.toLowerCase().startsWith(args[args.length - 1].toLowerCase()));
+        return currentOptions;
+    }
+
+    /**
      * Requests a list of possible completions for a command argument.
      *
      * @param sender  Source of the command.  For players tab-completing a
@@ -80,9 +93,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                 if (s != null) list.addAll(s.tabOptions(sender, args));
             }
             list.sort(String::compareTo);
-            // Remove options which do not start with the pending substring.
-            if (!args[args.length - 1].equals("")) list.removeIf(o -> !o.toLowerCase().startsWith(args[args.length - 1].toLowerCase()));
-            return list;
+            return removeBadCompletions(list, args);
         }
         return null;
     }
