@@ -57,11 +57,7 @@ public class CreateSubcommand implements Subcommand {
     public Collection<String> tabOptions (CommandSender sender, String[] args) {
         Collection<String> list = new ArrayList<>();
         if (args.length == 2) list.add("name:");
-        else if (args.length >= 3) {
-            String check = "";
-            for (String u: args) check += u;
-            list.addAll(Editor.addMissingOptions(check));
-        }
+        else if (args.length >= 3) list.addAll(Editor.addMissingOptions(args));
         return list;
     }
 }
