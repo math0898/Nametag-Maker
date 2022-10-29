@@ -4,6 +4,9 @@ import io.github.math0898.nametagmaker.commands.Subcommand;
 import io.github.math0898.nametagmaker.lang.Lang;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * The StatusSubcommand shows the general status of the plugin as a whole as well has how to get more usage help.
  *
@@ -22,5 +25,16 @@ public class StatusSubcommand implements Subcommand {
         sender.sendMessage(Lang.generateHeader());
         sender.sendMessage(Lang.prefix + Lang.useHelp);
         return true;
+    }
+
+    /**
+     * Returns a list of subcommand options when ran by the given player with the given arguments.
+     *
+     * @param sender The sender of this particular command.
+     * @param args   A comprehensive list of arguments which are pending.
+     */
+    @Override
+    public Collection<String> tabOptions (CommandSender sender, String[] args) {
+        return new ArrayList<>();
     }
 }

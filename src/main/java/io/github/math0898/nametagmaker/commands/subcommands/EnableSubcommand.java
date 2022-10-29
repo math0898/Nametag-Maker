@@ -7,6 +7,9 @@ import io.github.math0898.nametagmaker.lang.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * The EnableSubcommand is the counterpart to the DisableSubcommand and is used to re-enable the plugin after it has
  * been disabled.
@@ -32,5 +35,16 @@ public class EnableSubcommand implements Subcommand {
             Bukkit.getConsoleSender().sendMessage(Lang.prefix + sender.getName() + Lang.enabled);
         } else sender.sendMessage(Lang.prefix + Lang.alreadyEnabled);
         return true;
+    }
+
+    /**
+     * Returns a list of subcommand options when ran by the given player with the given arguments.
+     *
+     * @param sender The sender of this particular command.
+     * @param args   A comprehensive list of arguments which are pending.
+     */
+    @Override
+    public Collection<String> tabOptions (CommandSender sender, String[] args) {
+        return new ArrayList<>();
     }
 }

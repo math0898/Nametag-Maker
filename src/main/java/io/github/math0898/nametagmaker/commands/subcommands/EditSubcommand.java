@@ -8,6 +8,9 @@ import io.github.math0898.nametagmaker.lang.Lang;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * The EditSubcommand is used to edit existing tags and replace their values.
  *
@@ -42,5 +45,30 @@ public class EditSubcommand implements Subcommand {
         NametagApplier.refresh();
         sender.sendMessage(Lang.prefix + "Modified group " + ChatColor.GOLD + ref.name + ChatColor.GRAY + ".");
         return true;
+    }
+
+    /**
+     * Returns a list of subcommand options when ran by the given player with the given arguments.
+     *
+     * @param sender The sender of this particular command.
+     * @param args   A comprehensive list of arguments which are pending.
+     */
+    @Override
+    public Collection<String> tabOptions (CommandSender sender, String[] args) {
+        Collection<String> list = new ArrayList<>();
+        if (args.length == 2) for (TagGroup g: Tags.groups) list.add(g.name);
+        else if (args.length >= 3) {
+            String check = "";
+            for (String u: args) check += u;
+            if ((check.length() - check.replace("\"", "").length()) % 2 != 0) return list;
+            if (!check.contains("color:")) list.add("color:");
+            if (!check.contains("permission:")) list.add("permission:");
+            if (!check.contains("prefix:\"")) list.add("prefix:\"");
+            if (!check.contains("suffix:\"")) list.add("suffix:\"");
+            if (!check.contains("visible:")) list.add("visible:");
+            if (!check.contains("weight:")) list.add("weight:");
+            if (!check.contains("name:")) list.add("name:");
+        }
+        return list;
     }
 }

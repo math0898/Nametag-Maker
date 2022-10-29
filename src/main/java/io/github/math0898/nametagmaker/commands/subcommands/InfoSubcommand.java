@@ -6,6 +6,9 @@ import io.github.math0898.nametagmaker.commands.Subcommand;
 import io.github.math0898.nametagmaker.lang.Lang;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * The InfoSubcommand prints out the entire information of a registered tag.
  *
@@ -37,5 +40,18 @@ public class InfoSubcommand implements Subcommand {
         sender.sendMessage(Lang.generateHeader());
         g.fancyPrint(sender);
         return true;
+    }
+
+    /**
+     * Returns a list of subcommand options when ran by the given player with the given arguments.
+     *
+     * @param sender The sender of this particular command.
+     * @param args   A comprehensive list of arguments which are pending.
+     */
+    @Override
+    public Collection<String> tabOptions (CommandSender sender, String[] args) {
+        Collection<String> list = new ArrayList<>();
+        if (args.length == 2) for (TagGroup g: Tags.groups) list.add(g.name);
+        return list;
     }
 }

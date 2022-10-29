@@ -110,8 +110,9 @@ public final class NametagMaker extends JavaPlugin {
         if (!Lang.init()) console("Failed to load language!", ChatColor.RED);
         // Initializing Commands
         try {
-            this.getCommand("nametag").setExecutor(new MainCommand()); //May produce null pointer
-            this.getCommand("nametag").setTabCompleter(MainCommand.autocomplete); //May produce null pointer
+            MainCommand m = new MainCommand();
+            this.getCommand("nametag").setExecutor(m); //May produce null pointer
+            this.getCommand("nametag").setTabCompleter(m); //May produce null pointer
         } catch (NullPointerException exception) {
             console("Could not setup commands.", ChatColor.RED);
             console(exception.toString(), ChatColor.RED);

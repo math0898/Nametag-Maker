@@ -8,6 +8,9 @@ import io.github.math0898.nametagmaker.lang.Lang;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * The CreateSubcommand is used to create new tags with certain values.
  *
@@ -41,5 +44,29 @@ public class CreateSubcommand implements Subcommand {
         NametagApplier.refresh();
         sender.sendMessage(Lang.prefix + "Created new group " + ChatColor.GOLD + tag.name + ChatColor.GRAY + ".");
         return true;
+    }
+
+    /**
+     * Returns a list of subcommand options when ran by the given player with the given arguments.
+     *
+     * @param sender The sender of this particular command.
+     * @param args   A comprehensive list of arguments which are pending.
+     */
+    @Override
+    public Collection<String> tabOptions (CommandSender sender, String[] args) {
+        Collection<String> list = new ArrayList<>();
+        if (args.length == 2) list.add("name:");
+        else if (args.length >= 3) {
+            String check = "";
+            for (String u: args) check += u;
+            if ((check.length() - check.replace("\"", "").length()) % 2 != 0) return list;
+            if (!check.contains("color:")) list.add("color:");
+            if (!check.contains("permission:")) list.add("permission:");
+            if (!check.contains("prefix:\"")) list.add("prefix:\"");
+            if (!check.contains("suffix:\"")) list.add("suffix:\"");
+            if (!check.contains("visible:")) list.add("visible:");
+            if (!check.contains("weight:")) list.add("weight:");
+        }
+        return list;
     }
 }

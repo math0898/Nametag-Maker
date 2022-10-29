@@ -1,7 +1,5 @@
 package io.github.math0898.nametagmaker.commands;
 
-import io.github.math0898.nametagmaker.TagGroup;
-import io.github.math0898.nametagmaker.Tags;
 import io.github.math0898.nametagmaker.commands.subcommands.*;
 import io.github.math0898.nametagmaker.lang.Lang;
 import org.bukkit.command.Command;
@@ -17,12 +15,7 @@ import java.util.*;
  *
  * @author Sugaku
  */
-public class MainCommand implements CommandExecutor {
-
-    /**
-     * The tab completer which fills in options for the command as the player types.
-     */
-    public static TabCompleter autocomplete = new AutocompleteMainCommand();
+public class MainCommand implements CommandExecutor, TabCompleter {
 
     /**
      * A map of subcommands indexed by the first argument to invoke them.
@@ -63,14 +56,6 @@ public class MainCommand implements CommandExecutor {
         }
         return true;
     }
-}
-
-/**
- * This class handles the tab completion of the command described above.
- *
- * @author Sugaku
- */
-class AutocompleteMainCommand implements TabCompleter {
 
     /**
      * Requests a list of possible completions for a command argument.
@@ -86,30 +71,16 @@ class AutocompleteMainCommand implements TabCompleter {
      * to default to the command executor.
      */
     @Override
-    @SuppressWarnings("All")
-    public List<String> onTabComplete (CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete (@NotNull CommandSender sender, Command command, @NotNull String alias, String[] args) {
         if (command.getName().equalsIgnoreCase("nametag")) {
             ArrayList<String> list = new ArrayList<>();
-            if (args.length == 1) list.addAll(Arrays.asList("create", "disable", "edit", "enable", "help", "info", "refresh", "reload"));
-            else if (args.length == 2) {
-                if (args[0].equalsIgnoreCase("create")) list.add("name:");
-                else if (args[0].equalsIgnoreCase("edit") || args[0].equalsIgnoreCase("info")) {
-                    for (TagGroup g: Tags.groups) list.add(g.name);
-                    list.sort(String::compareTo);
-                }
-            } else if (args.length >= 3) {
-                String check = "";
-                for (String u: args) check += u;
-                if ((check.length() - check.replace("\"", "").length()) % 2 != 0) return list;
-                if (!check.contains("color:")) list.add("color:");
-                if (!check.contains("permission:")) list.add("permission:");
-                if (!check.contains("prefix:\"")) list.add("prefix:\"");
-                if (!check.contains("suffix:\"")) list.add("suffix:\"");
-                if (!check.contains("visible:")) list.add("visible:");
-                if (!check.contains("weight:")) list.add("weight:");
-                if (args[0].equalsIgnoreCase("edit")) if (!check.contains("name:")) list.add("name:");
+            if (args.length == 1) list.addAll(subcommands.keySet());
+            else {
+                Subcommand s = subcommands.get(args[0]);
+                if (s != null) list.addAll(s.tabOptions(sender, args));
             }
             list.sort(String::compareTo);
+            // Remove options which do not start with the pending substring.
             if (!args[args.length - 1].equals("")) list.removeIf(o -> !o.toLowerCase().startsWith(args[args.length - 1].toLowerCase()));
             return list;
         }
